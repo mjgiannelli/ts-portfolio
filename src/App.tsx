@@ -1,7 +1,9 @@
+import CheatCodesView from './views/cheat-codes/cheat-codes.view';
+
 function App() {
   return (
     <div className="App">
-      <h1>Hello Again</h1>
+      <CheatCodesView />
     </div>
   );
 }
