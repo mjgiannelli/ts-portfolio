@@ -27,69 +27,98 @@ const MortalKombatViewController = (
       mount.appendChild(renderer.domElement);
     }
 
-    // Set the camera position first to a non-zero value
-    camera.position.z = 5; // Set the distance from the camera
+    // Set the camera position
+    camera.position.z = 5;
 
-    // Calculate the visible height and width based on the scene-canvas size
-    const distanceFromCamera = Math.abs(camera.position.z); // Distance from the camera to the object
-    const fovInRadians = (camera.fov * Math.PI) / 180; // Convert FOV to radians
+    // Blood rain system
+    const bloodDropCount = 5000;
+    const bloodGeometry = new THREE.BufferGeometry();
+    const bloodPositions = new Float32Array(bloodDropCount * 3);
 
-    // Calculate visible height based on the canvas height and width
-    const visibleHeight = 2 * distanceFromCamera * Math.tan(fovInRadians / 2);
-    const visibleWidth = visibleHeight * camera.aspect;
+    for (let i = 0; i < bloodDropCount; i++) {
+      const x = (Math.random() - 0.5) * 10;
+      const y = Math.random() * 10; // Starts from above the view
+      const z = (Math.random() - 0.5) * 10;
+      bloodPositions[i * 3] = x;
+      bloodPositions[i * 3 + 1] = y;
+      bloodPositions[i * 3 + 2] = z;
+    }
 
-    // Create the points for the line
-    const numPoints = 100; // Number of points in the line
-    const waveAmplitude = 0.25; // The height of the wave
-    const waveFrequency = 5; // The frequency of the wave
-    const lineLength = visibleWidth; // The length of the line in world units
+    bloodGeometry.setAttribute(
+      'position',
+      new THREE.BufferAttribute(bloodPositions, 3),
+    );
 
+    const bloodMaterial = new THREE.PointsMaterial({
+      color: 0x8b0000, // Dark red color
+      size: 0.05,
+      transparent: true,
+      opacity: 0.9,
+    });
+
+    const bloodRain = new THREE.Points(bloodGeometry, bloodMaterial);
+    scene.add(bloodRain);
+
+    // Line movement system (wave)
+    const numPoints = 100;
+    const waveAmplitude = 0.25;
+    const waveFrequency = 5;
+    const lineLength = 10;
     const points = [];
+
     for (let i = 0; i < numPoints; i++) {
-      const x = (i / numPoints) * lineLength - lineLength / 2; // x values centered on the screen
-      const y = Math.sin(i * waveFrequency) * waveAmplitude; // y values based on sine wave
+      const x = (i / numPoints) * lineLength - lineLength / 2;
+      const y = Math.sin(i * waveFrequency) * waveAmplitude;
       points.push(new THREE.Vector3(x, y, 0));
     }
 
     const geometry = new THREE.BufferGeometry().setFromPoints(points);
     const material = new THREE.LineBasicMaterial({ color: 0xa06819 });
     const line = new THREE.Line(geometry, material);
-
-    // Center the line in the view
-    line.position.x = 0;
     scene.add(line);
 
-    // Animation variables
-    const speed = 0.15; // Speed of the line's movement
-    let lineOffset = 0; // To track how much the line has moved
+    let lineOffset = 0;
+    const speed = 0.15;
 
+    // Animate function
     const animate = (time: number) => {
       requestAnimationFrame(animate);
 
-      const positions = geometry.attributes.position.array as Float32Array;
+      const linePositions = geometry.attributes.position.array as Float32Array;
 
-      // Update line's position to move from left to right
+      // Update line movement
       for (let i = 0; i < numPoints; i++) {
-        const x = (i / numPoints) * lineLength - lineLength / 2 + lineOffset; // Move the line across the screen
+        const x = (i / numPoints) * lineLength - lineLength / 2 + lineOffset;
         const y = Math.sin(x * waveFrequency + time * 0.002) * waveAmplitude;
-        positions[i * 3] = x; // Update x coordinate (index 0 in 3D coordinates: [x, y, z])
-        positions[i * 3 + 1] = y; // Update y coordinate
+        linePositions[i * 3] = x;
+        linePositions[i * 3 + 1] = y;
       }
+      geometry.attributes.position.needsUpdate = true;
 
-      geometry.attributes.position.needsUpdate = true; // Notify Three.js that the geometry has changed
-
-      // Move the entire line
       lineOffset += speed;
 
-      // Stop animation when the start of the line hits the right side of the screen
-      const rightEdgeOfScreen = visibleWidth / 2; // The right edge in world coordinates
-      const startOfLineX = lineOffset - lineLength; // The x-position of the start of the line
-      if (startOfLineX < rightEdgeOfScreen) {
-        renderer.render(scene, camera);
+      // Blood drop animation
+      const bloodPositions = bloodGeometry.attributes.position
+        .array as Float32Array;
+
+      for (let i = 0; i < bloodDropCount; i++) {
+        let y = bloodPositions[i * 3 + 1]; // Y position of the drop
+        y -= 0.02 * Math.random(); // Move the drop down
+
+        // If the drop goes below a certain point, reset it to the top
+        if (y < -5) {
+          y = 5;
+        }
+
+        bloodPositions[i * 3 + 1] = y;
       }
+      bloodGeometry.attributes.position.needsUpdate = true;
+
+      // Render the scene
+      renderer.render(scene, camera);
     };
 
-    animate(0); // Start animation
+    animate(0); // Start the animation
     playAudio();
 
     // Cleanup on component unmount
