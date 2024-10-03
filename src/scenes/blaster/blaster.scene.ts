@@ -15,6 +15,7 @@ export default class BlasterScene extends THREE.Scene {
   private directionVector = new THREE.Vector3();
 
   private bullets: Bullet[] = [];
+  private targets: THREE.Group[] = [];
 
   constructor(camera: THREE.PerspectiveCamera) {
     super();
@@ -44,6 +45,7 @@ export default class BlasterScene extends THREE.Scene {
     const t4 = await this.createTarget(targetMtl);
     t4.position.x = -2;
     t4.position.z = -3;
+    this.targets.push(t1, t2, t3, t4);
 
     this.add(t1, t2, t3, t4);
 
@@ -179,6 +181,19 @@ export default class BlasterScene extends THREE.Scene {
         this.remove(b.group);
         this.bullets.splice(i, 1);
         i--;
+      } else {
+        for (let j = 0; j < this.targets.length; j++) {
+          const target = this.targets[j];
+          if (target.position.distanceToSquared(b.group.position) < 0.1275) {
+            this.remove(b.group);
+            this.bullets.splice(i, 1);
+            i--;
+            target.visible = false;
+            setTimeout(() => {
+              target.visible = true;
+            }, 1000);
+          }
+        }
       }
     }
   }
