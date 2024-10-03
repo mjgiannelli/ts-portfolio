@@ -7,7 +7,7 @@ const CheatCodesViewController = () => {
   const KONAMI_CODE: number[] = [65, 66, 65, 67, 65, 66, 66];
   // ABACABB sequence corresponds to key codes: A(65), B(66), A(65), C(67), A(65), B(66), B(66)
   const [keySequence, setKeySequence] = useState<number[]>([]);
-  const [showMortalKombat, setShowMortalKombat] = useState<boolean>(false);
+  const [showMortalKombat, setShowMortalKombat] = useState<boolean>(true);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
