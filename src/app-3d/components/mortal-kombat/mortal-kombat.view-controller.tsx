@@ -3,9 +3,9 @@ import * as THREE from 'three';
 import BlasterScene from '../../scenes/blaster/blaster.scene';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
-import { KeyDisplay } from '../../utilties/utils';
+import { KeyDisplay } from '../../../utilties/utils';
 import { Texture } from 'three';
-import { CharacterControls } from '../../utilties/character-controls';
+import { CharacterControls } from '../../../utilties/character-controls';
 
 const MortalKombatViewController = (
   canvasRef: React.RefObject<HTMLDivElement>,
@@ -72,7 +72,6 @@ const MortalKombatViewController = (
       wrapAndRepeatTexture(material.normalMap as Texture);
       wrapAndRepeatTexture(material.displacementMap as Texture);
       wrapAndRepeatTexture(material.aoMap as Texture);
-      // const material = new THREE.MeshPhongMaterial({ map: placeholder})
 
       const floor = new THREE.Mesh(geometry, material);
       floor.receiveShadow = true;

@@ -1,0 +1,151 @@
+@media (min-width: 0px) {
+
+    .project {
+        text-align: center;
+        position: relative;
+      }
+
+      .project-content {
+        background-color: var(--text-color);
+        justify-content: center;
+        text-align: center;
+        background-image: linear-gradient(#22c1c3,#fdbb2d);
+        display: flex;
+        align-items: center;
+      }
+      
+      .project-links {
+        text-decoration: none;
+        color: blue;
+      }
+      
+      .project_description {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: white;
+        color: #fff;
+        visibility: hidden;
+        opacity: 0;
+        transition: opacity .5s, visibility .5s;
+        background-color: var(--text-color);
+        justify-content: center;
+        text-align: center;
+        background-image: linear-gradient(#22c1c3,#fdbb2d);
+        display: flex;
+      }
+      
+      .project:hover .project_description {
+        visibility: visible;
+        opacity: 1;
+      }
+      
+      .project-name {
+        font-size: 3rem;
+      }
+      
+}
+
+@media (min-width: 576px) {
+
+    .project-title {
+        font-size: 2.5rem;
+      }
+    
+      .project-links {
+        font-size: 2rem;
+      }
+
+      .project-prob {
+        font-size: 2rem;
+      }
+
+      .project-tech {
+        font-size: 2rem;
+      }
+     
+      .project-name {
+        font-size: 4rem;
+      }
+
+}
+
+@media (min-width: 768px) {
+
+    .project-title {
+        font-size: 3rem;
+      }
+      
+      .project-links {
+        font-size: 2.5rem;
+      }
+      
+      .project-prob {
+        font-size: 2.5rem;
+      }
+
+      .project-tech {
+        font-size: 2.5rem;
+      }
+
+      .project-name {
+        font-size: 5rem;
+      }
+
+}
+
+
+@media (min-width: 992px) {
+
+    #projects {
+        justify-content: space-between;
+      }
+    
+      .project-title {
+        font-size: 2rem;
+      }
+      
+      .project-links {
+        font-size: 1.5rem;
+    }
+
+    .project-prob {
+      font-size: 1.5rem;
+    }
+
+    .project-tech {
+      font-size: 1.5rem;
+    }
+      
+      .project-name {
+        font-size: 3rem;
+      }
+
+}
+
+@media (min-width: 1200px) {
+
+    .project-title {
+        font-size: 2.25rem;
+      }
+      
+      .project-links {
+        font-size: 2rem;
+      }
+
+      .project-prob {
+        font-size: 2rem;
+      }
+
+      .project-tech {
+        font-size: 2rem;
+      }
+      
+      .project-name {
+        font-size: 4rem;
+      }
+        
+
+}    

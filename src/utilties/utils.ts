@@ -70,3 +70,29 @@ export class KeyDisplay {
     }
   }
 }
+
+// Validate email function with TypeScript type annotation
+export function validateEmail(email: string): boolean {
+  const re =
+    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  return re.test(String(email).toLowerCase());
+}
+
+// Format title function with TypeScript type annotation
+export function formatTitle(title: string): string {
+  const titleArray = title.split('-');
+  const newTitleArray: string[] = [];
+
+  for (let i = 0; i < titleArray.length; i++) {
+    newTitleArray.push(capitalizeFirstLetter(titleArray[i]));
+  }
+
+  const formattedTitle = newTitleArray.join(' ');
+
+  return formattedTitle;
+}
+
+// Capitalize first letter function with TypeScript type annotation
+export function capitalizeFirstLetter(str: string): string {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}

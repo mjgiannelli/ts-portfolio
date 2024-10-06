@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
-import CheatCodesView from './views/cheat-codes/cheat-codes.view';
 import { WebGLCompatibilityContext } from './providers/webGLCompliant.context';
+import CheatCodesView from './app-3d/views/cheat-codes/cheat-codes.view';
+import App2D from './app-2d/app-2d';
 
 function App() {
   const [webGL, setWebGL] = useState<boolean | null>(null);
@@ -12,7 +13,7 @@ function App() {
     if (checkForAppUpdate) {
       if (webGLCompatible !== null) {
         setCheckForAppUpdate(false);
-        setWebGL(webGLCompatible as unknown as boolean);
+        setWebGL(false);
         setLoading(false);
       }
     }
@@ -27,7 +28,7 @@ function App() {
           <CheatCodesView />
         </div>
       ) : (
-        <div>Regular ole td app</div>
+        <App2D />
       )}
     </>
   );
