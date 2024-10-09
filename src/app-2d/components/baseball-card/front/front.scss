@@ -1,0 +1,76 @@
+@media (min-width: 0px) {
+
+    .card-container {
+        border: solid .5rem white;
+        width: 20rem;
+        height: 30rem;
+        margin: auto;
+        background-color: rgb(211,184,147);
+        display: flex;
+      }
+      
+      #front-card-body {
+        border: solid .3rem white;
+        width: 95%;
+        height: 95%;
+        margin: auto;
+        background: url('../../../../../public/assets/images/card-2.jpg') center center no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        flex-direction: column;
+      }
+      
+      .topps-div {
+        padding-top: .5rem;
+        padding-right: .5rem;
+      }
+      
+      .topps {
+        width: 6rem;
+      }
+      
+      #front-card-signature-div {
+        border: solid .5rem white;
+        border-image: url('https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/160/apple/285/star_2b50.png');
+        height: 20%;
+        width: 80%;
+        margin-bottom: 1rem;
+        background-color: black;
+        display: flex;
+        align-self: center;
+      }
+      
+      #card-signature {
+        background-color: rgb(211,184,147);
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-wrap: wrap;
+      }
+      
+      #print-name {
+        color: black;
+        width: 100%;
+        font-size: 1rem;
+        text-align: end;
+        padding-right: .2rem;
+      }
+      
+      #cursive-name {
+        color: black;
+          width: 100%;
+          font-family: Brush Script MT, Brush Script Std, cursive;
+          margin-top: 0rem;
+      }
+      
+    }
+    
+    @media (min-width: 1200px) {
+    
+        #cursive-name {
+            font-size: 2rem;
+        }
+    
+    }

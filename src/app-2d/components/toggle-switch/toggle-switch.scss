@@ -1,0 +1,81 @@
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 110px;
+    height: 25px;
+  }
+  .toggle-switch input[type="checkbox"] {
+    display: none;
+  }
+  .toggle-switch .switch {
+    
+    position: absolute;
+    background-color: #ffffff;
+    border-radius: 25px;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    transition: background-color 0.2s ease;
+  }
+  .toggle-switch .switch::before {
+    position: absolute;
+    content: '';
+    left: 2px;
+    top: 2px;
+    width: 21px;
+    height: 21px;
+    background-color: #aaa;
+    border-radius: 50%;
+    transition: transform 0.2s ease;
+  }
+  .toggle-switch input[type="checkbox"]:checked + .switch::before {
+    transform: translateX(84.5px);
+    background-color: #aaa;
+  }
+  .toggle-switch input[type="checkbox"]:checked + .switch {
+    background-color: #000000;
+  }
+
+  .text {
+      color: #000000;
+  }
+
+  .text:after {
+    position: absolute;
+    margin-top: 0.4rem;
+    margin-left: 2.7rem;
+    font-size: 1.5rem;
+    content: "Dark Mode";
+    -webkit-transition: opacity 0.5s ease-in-out;
+    -moz-transition: opacity 0.5s ease-in-out;
+    transition: opacity 0.2s ease-in-out;
+  }
+  .text:before {
+    color: #ffffff;
+    position: absolute;
+    margin-top: 0.4rem;
+    margin-left: 1rem;
+    font-size: 1.5rem;
+    content: "Light Mode";
+    -webkit-transition: opacity 0.5s ease-in-out;
+    -moz-transition: opacity 0.5s ease-in-out;
+    transition: opacity 0.2s ease-in-out;
+  }
+
+  input + .switch + .text:after {
+    opacity: 1;
+  }
+
+  input + .switch + .text:before {
+    opacity: 0;
+  }
+  
+  
+  input:checked + .switch + .text:after {
+    opacity: 0;
+  }
+  
+  input:checked + .switch + .text:before {
+    opacity: 1;
+  }

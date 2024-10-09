@@ -1,0 +1,76 @@
+@media (min-width: 0px) {
+
+    #back-card-body {
+        width: 100%;
+        margin-top: .5rem;
+      }
+      
+      #num {
+        font-size: 4rem;
+        border: black .3rem solid;
+        border-radius: 10rem;
+        color: black;
+        background: repeating-linear-gradient(
+        90deg, white 3rem, blue, white, blue, white);
+        font-weight: bold;
+        padding: .2rem;
+      }
+      
+      #back-header {
+        justify-content: space-between;
+        padding: 1rem;
+      }
+      
+      #stats-div {
+        border: black .3rem solid;
+        width: 95%;
+        margin: .5rem auto;
+      }
+      
+      #stats-box {
+          display: flex;
+          align-content: center;
+          justify-content: center;
+          width: 100%;
+       }
+      
+      #stats-row-titles {
+          flex-direction: column;
+          width: 50%;
+          justify-content: flex-end;
+       }
+      
+      #stats-row-nums {
+          flex-direction: column;
+          width: 50%;
+          border-left:black .1rem solid;
+       }
+      
+       #git-stats-header {
+         border-bottom: black .1rem solid;
+       }
+      
+       .stats {
+         width: 100%;
+       } 
+       
+      #text-back {
+        color: var(--primary-color);
+      }
+}
+
+@media (min-width: 768px) {
+
+    .stats {
+        width: 100%;
+      }
+
+}
+
+@media (min-width: 1200px) {
+
+    .stats {
+        font-size: 1.75rem;
+      }
+
+}
