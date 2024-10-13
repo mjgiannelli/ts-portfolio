@@ -1,6 +1,5 @@
 import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
-import BlasterScene from '../../scenes/blaster/blaster.scene';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { KeyDisplay } from '../../../utilties/utils';
@@ -11,11 +10,6 @@ const MortalKombatViewController = (
   canvasRef: React.RefObject<HTMLDivElement>,
 ) => {
   const mountRef = useRef<HTMLDivElement | null>(null);
-
-  const playAudio = () => {
-    const audio = new Audio('/assets/audio/scorpion.mp3');
-    audio.play();
-  };
 
   useEffect(() => {
     const canvasElement = canvasRef.current;
@@ -41,9 +35,6 @@ const MortalKombatViewController = (
     function generateFloor() {
       // TEXTURES
       const textureLoader = new THREE.TextureLoader();
-      const placeholder = textureLoader.load(
-        'assets/textures/placeholder/placeholder.png',
-      );
       const sandBaseColor = textureLoader.load(
         'assets/textures/sand/Sand 002_COLOR.jpg',
       );

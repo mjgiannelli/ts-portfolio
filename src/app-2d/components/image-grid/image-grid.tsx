@@ -16,7 +16,6 @@ interface BlockData {
 }
 
 const ImageGrid: React.FC<ImageGridViewProps> = ({ imgContainerRef }) => {
-  const [displayImg, setDisplayImg] = useState<boolean>(true);
   const hasMounted = useRef(false);
   const blockSize = 6;
   const imageWidth = 180;
@@ -114,21 +113,19 @@ const ImageGrid: React.FC<ImageGridViewProps> = ({ imgContainerRef }) => {
 
   return (
     <>
-      {displayImg ? (
-        <>
-          {blocks.map((block) => (
-            <Block
-              key={block.key}
-              x={block.x}
-              y={block.y}
-              size={blockSize}
-              backgroundPositionX={block.backgroundPositionX}
-              backgroundPositionY={block.backgroundPositionY}
-              imageUrl={imageUrl}
-            />
-          ))}
-        </>
-      ) : null}
+      <>
+        {blocks.map((block) => (
+          <Block
+            key={block.key}
+            x={block.x}
+            y={block.y}
+            size={blockSize}
+            backgroundPositionX={block.backgroundPositionX}
+            backgroundPositionY={block.backgroundPositionY}
+            imageUrl={imageUrl}
+          />
+        ))}
+      </>
     </>
   );
 };

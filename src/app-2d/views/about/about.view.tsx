@@ -1,11 +1,9 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import './about.view.scss';
 import ImageGrid from '../../components/image-grid/image-grid';
-import AboutViewController from './about.view-controller';
 
 const About: React.FC = () => {
   const imgContainerRef = useRef<HTMLDivElement | null>(null);
-  const { displayImage, setDisplayImage } = AboutViewController();
   return (
     <>
       <h1 style={{ textAlign: 'center', width: '90%', margin: 'auto' }}>
@@ -33,9 +31,7 @@ const About: React.FC = () => {
         }}
       >
         <>
-          {displayImage ? (
-            <ImageGrid imgContainerRef={imgContainerRef} />
-          ) : null}
+          <ImageGrid imgContainerRef={imgContainerRef} />
         </>
       </div>
     </>
