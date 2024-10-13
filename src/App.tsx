@@ -2,6 +2,8 @@ import { useContext, useEffect, useState } from 'react';
 import { WebGLCompatibilityContext } from './providers/webGLCompliant.context';
 import CheatCodesView from './app-3d/views/cheat-codes/cheat-codes.view';
 import App2D from './app-2d/app-2d';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 function App() {
   const [webGL, setWebGL] = useState<boolean | null>(null);
@@ -33,7 +35,9 @@ function App() {
   return (
     <>
       {loading ? (
-        <div>Loading...</div>
+        <div className="loading">
+          <FontAwesomeIcon icon={faSpinner} />
+        </div>
       ) : webGL ? (
         <div className="App">
           <CheatCodesView />

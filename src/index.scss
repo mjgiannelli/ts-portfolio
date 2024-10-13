@@ -15,3 +15,37 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+@media (min-width: 0px) {
+  .loading {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    margin-top: 20rem;
+    svg {
+      height: 10rem;
+      width: 10rem;
+      animation: rotate360 2s linear infinite;
+    }
+  }
+
+  @keyframes rotate360 {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+}
+
+@media (min-width: 768px) {
+    
+  .loading {
+    svg {
+      height: 15rem;
+      width: 15rem;
+    }
+  }
+
+}

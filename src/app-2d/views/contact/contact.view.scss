@@ -1,26 +1,5 @@
 @media (min-width: 0px) {
 
-    .loading {
-      display: flex;
-      justify-content: center;
-      align-content: center;
-      margin-top: 20rem;
-      svg {
-        height: 10rem;
-        width: 10rem;
-        animation: rotate360 2s linear infinite;
-      }
-    }
-
-    @keyframes rotate360 {
-      from {
-        transform: rotate(0deg);
-      }
-      to {
-        transform: rotate(360deg);
-      }
-    }
-
     .error-text {
         color: var(--secondary-color);
         font-size: 3rem;
@@ -49,13 +28,6 @@
 }
 
 @media (min-width: 768px) {
-
-    .loading {
-      svg {
-        height: 15rem;
-        width: 15rem;
-      }
-    }
 
     #contact-form {
         width: 61.5rem;
