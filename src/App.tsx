@@ -8,16 +8,27 @@ function App() {
   const [loading, setLoading] = useState<boolean>(true);
   const [checkForAppUpdate, setCheckForAppUpdate] = useState<boolean>(true);
   const webGLCompatible = useContext(WebGLCompatibilityContext || {});
-
+  const [colorTheme, setColorTheme] = useState<string | null>(null);
   useEffect(() => {
-    if (checkForAppUpdate) {
+    if (checkForAppUpdate && colorTheme !== null) {
       if (webGLCompatible !== null) {
         setCheckForAppUpdate(false);
         setWebGL(false);
         setLoading(false);
       }
     }
-  }, [checkForAppUpdate, webGLCompatible]);
+  }, [checkForAppUpdate, webGLCompatible, colorTheme]);
+
+  useEffect(() => {
+    const cTheme = localStorage.getItem('colorTheme');
+    if (cTheme === 'Light') {
+      const htmlEl = document.querySelector('html');
+      htmlEl?.setAttribute('theme', 'Light');
+      setColorTheme('Light');
+    } else {
+      setColorTheme('Dark');
+    }
+  }, []);
 
   return (
     <>
@@ -28,7 +39,7 @@ function App() {
           <CheatCodesView />
         </div>
       ) : (
-        <App2D />
+        <App2D colorTheme={colorTheme as string} />
       )}
     </>
   );

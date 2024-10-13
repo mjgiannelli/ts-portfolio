@@ -7,7 +7,11 @@ import Footer from './components/footer/footer';
 import Resume from './views/resume/resume.view';
 import About from './views/about/about.view';
 
-const App2D = () => {
+interface App2DProps {
+  colorTheme: string;
+}
+
+const App2D: React.FC<App2DProps> = ({ colorTheme }) => {
   const [navLinks] = useState([
     {
       name: 'About',
@@ -30,6 +34,7 @@ const App2D = () => {
         navLinks={navLinks}
         selectedNavLink={selectedNavLink}
         setSelectedNavLink={setSelectedNavLink}
+        colorTheme={colorTheme}
       />
       <main>
         {selectedNavLink === 'About' ? (

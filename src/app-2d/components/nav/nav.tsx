@@ -6,10 +6,23 @@ interface NavProps {
   navLinks: { name: string }[];
   selectedNavLink: string;
   setSelectedNavLink: (link: string) => void;
+  colorTheme: string;
 }
 
-const Nav: React.FC<NavProps> = ({ selectedNavLink, setSelectedNavLink }) => {
+const Nav: React.FC<NavProps> = ({
+  selectedNavLink,
+  setSelectedNavLink,
+  colorTheme,
+}) => {
   const [toggled, setToggled] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (colorTheme === 'Light') {
+      setToggled(true);
+    } else {
+      setToggled(false);
+    }
+  }, []);
 
   useEffect(() => {
     document.title = selectedNavLink;
@@ -22,6 +35,7 @@ const Nav: React.FC<NavProps> = ({ selectedNavLink, setSelectedNavLink }) => {
 
     if (htmlEl) {
       htmlEl.setAttribute('theme', !isChecked ? 'Dark' : 'Light');
+      localStorage.setItem('colorTheme', !isChecked ? 'Dark' : 'Light');
     }
   };
 
