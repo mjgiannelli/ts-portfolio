@@ -7,9 +7,7 @@ const Footer: React.FC = () => {
     <footer className="box">
       <hr />
       <div className="row">
-        <h5 className="col-10">
-          <span>&copy;</span> 2021 Designs by Gia, LLC.
-        </h5>
+        <h5 className="col-10">*Social Media Links*</h5>
         <div id="icon-div" className="row">
           <div className="social-icons">
             <SocialIcon url="https://github.com/mjgiannelli" />
