@@ -12,7 +12,6 @@ const Footer: React.FC = () => {
         </h5>
         <div id="icon-div" className="row">
           <div className="social-icons">
-            <SocialIcon url="https://twitter.com/MarkGiannelli2" />
             <SocialIcon url="https://github.com/mjgiannelli" />
             <SocialIcon url="https://www.linkedin.com/in/mark-giannelli-mba-458585108/" />
           </div>

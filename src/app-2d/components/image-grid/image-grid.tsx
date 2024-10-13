@@ -1,6 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Block from '../block/block';
 
+interface ImageGridViewProps {
+  imgContainerRef: React.RefObject<HTMLDivElement>;
+}
+
 interface BlockData {
   key: string;
   x: number;
@@ -11,7 +15,8 @@ interface BlockData {
   backgroundPositionY: number;
 }
 
-const ImageGrid: React.FC = () => {
+const ImageGrid: React.FC<ImageGridViewProps> = ({ imgContainerRef }) => {
+  const [displayImg, setDisplayImg] = useState<boolean>(true);
   const hasMounted = useRef(false);
   const blockSize = 6;
   const imageWidth = 180;
@@ -23,19 +28,23 @@ const ImageGrid: React.FC = () => {
   const [blocks, setBlocks] = useState<BlockData[]>([]);
 
   useEffect(() => {
+    const imgContainerElement = imgContainerRef.current;
+    if (!imgContainerElement) return;
     if (hasMounted.current) return;
+    const { clientWidth: width, clientHeight: height } = imgContainerElement;
     hasMounted.current = true;
     const initialBlocks: BlockData[] = [];
 
+    // Define the cluster area
+    const clusterWidth = 200; // Adjust the size of the cluster
+    const clusterHeight = 200; // Adjust the size of the cluster
+
     for (let y = 0; y < rows; y++) {
       for (let x = 0; x < columns; x++) {
-        if (x === 10 && y === 29) {
-          console.log('initializing block');
-        }
         initialBlocks.push({
           key: `${x}-${y}`,
-          x: x * blockSize,
-          y: y * blockSize,
+          x: x * blockSize + Math.random() * clusterWidth,
+          y: x * blockSize + Math.random() * clusterHeight,
           x0: x * blockSize,
           y0: y * blockSize,
           backgroundPositionX: x * blockSize,
@@ -46,16 +55,16 @@ const ImageGrid: React.FC = () => {
 
     setBlocks(initialBlocks);
     // Start the animation sequence
-    setTimeout(animateToCluster, 1000); // After 1 second
+    setTimeout(() => animateToCluster(width), 1000); // After 1 second
     console.log('ran animation to cluster');
-    setTimeout(animateToMiddleLeft, 2000); // After 3 seconds
+    setTimeout(() => animateToMiddleLeft(width, height), 2000); // After 3 seconds
     console.log('ran animation middle left');
-    setTimeout(animateToLowerMiddle, 3000); // After 5 seconds
+    setTimeout(() => animateToLowerMiddle(width, height), 3000); // After 5 seconds
     console.log('ran animation to lower middle');
   }, []);
 
-  const animateToCluster = () => {
-    const clusterX = window.innerWidth - window.innerWidth * 0.1; // Adjust as needed
+  const animateToCluster = (w: number) => {
+    const clusterX = w - w * 0.1; // Adjust as needed
     const clusterY = 0;
     const clusterWidth = 501;
     const clusterHeight = 300;
@@ -71,9 +80,9 @@ const ImageGrid: React.FC = () => {
     );
   };
 
-  const animateToMiddleLeft = () => {
-    const deltaX = -window.innerWidth + window.innerWidth * 0.15; // Adjust as needed
-    const deltaY = window.innerHeight / 2 - 25; // Adjust as needed
+  const animateToMiddleLeft = (w: number, h: number) => {
+    const deltaX = -w + w * 0.15; // Adjust as needed
+    const deltaY = h / 2 - 25; // Adjust as needed
     setBlocks((prevBlocks) =>
       prevBlocks.map((block) => {
         return {
@@ -85,9 +94,9 @@ const ImageGrid: React.FC = () => {
     );
   };
 
-  const animateToLowerMiddle = () => {
-    const finalX = window.innerWidth / 2 - imageWidth / 2;
-    const finalY = window.innerHeight - imageHeight - 50; // 50px from bottom
+  const animateToLowerMiddle = (w: number, h: number) => {
+    const finalX = w / 2 - imageWidth / 2;
+    const finalY = h - imageHeight - 50; // 50px from bottom
 
     setBlocks((prevBlocks) =>
       prevBlocks.map((block) => {
@@ -104,26 +113,23 @@ const ImageGrid: React.FC = () => {
   };
 
   return (
-    <div
-      style={{
-        position: 'relative',
-        width: '100vw',
-        height: '100vh',
-        overflow: 'hidden',
-      }}
-    >
-      {blocks.map((block) => (
-        <Block
-          key={block.key}
-          x={block.x}
-          y={block.y}
-          size={blockSize}
-          backgroundPositionX={block.backgroundPositionX}
-          backgroundPositionY={block.backgroundPositionY}
-          imageUrl={imageUrl}
-        />
-      ))}
-    </div>
+    <>
+      {displayImg ? (
+        <>
+          {blocks.map((block) => (
+            <Block
+              key={block.key}
+              x={block.x}
+              y={block.y}
+              size={blockSize}
+              backgroundPositionX={block.backgroundPositionX}
+              backgroundPositionY={block.backgroundPositionY}
+              imageUrl={imageUrl}
+            />
+          ))}
+        </>
+      ) : null}
+    </>
   );
 };
 

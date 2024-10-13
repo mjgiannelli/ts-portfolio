@@ -1,22 +1,43 @@
-import React, { useState } from 'react';
-import ReactCardFlip from 'react-card-flip';
-
+import React, { useRef, useState } from 'react';
 import './about.view.scss';
-import BaseballCardBack from '../../components/baseball-card/back/back';
-import BaseballCardFront from '../../components/baseball-card/front/front';
-import Selfie from '../../components/block/block';
-import BlocksGrid from '../../components/image-grid/image-grid';
+import ImageGrid from '../../components/image-grid/image-grid';
+import AboutViewController from './about.view-controller';
 
 const About: React.FC = () => {
-  const [isFlipped, setIsFlipped] = useState<boolean>(false);
-
-  const handleClick = () => {
-    setIsFlipped(!isFlipped);
-  };
-
+  const imgContainerRef = useRef<HTMLDivElement | null>(null);
+  const { displayImage, setDisplayImage } = AboutViewController();
   return (
     <>
-      <BlocksGrid />
+      <h1 style={{ textAlign: 'center', width: '90%', margin: 'auto' }}>
+        Senior Full Stack Software Developer
+      </h1>
+      <p
+        style={{
+          textAlign: 'center',
+          width: '95%',
+          margin: 'auto',
+          marginTop: '1rem',
+        }}
+      >
+        I have a passion for bringing ideas to life. Let's chat about what I can
+        do for you.
+      </p>
+      <div
+        id="img-cont"
+        ref={imgContainerRef}
+        style={{
+          width: '90%',
+          margin: 'auto',
+          height: '50vh',
+          position: 'relative',
+        }}
+      >
+        <>
+          {displayImage ? (
+            <ImageGrid imgContainerRef={imgContainerRef} />
+          ) : null}
+        </>
+      </div>
     </>
   );
 };

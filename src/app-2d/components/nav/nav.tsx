@@ -31,11 +31,6 @@ const Nav: React.FC<NavProps> = ({ selectedNavLink, setSelectedNavLink }) => {
         <ToggleSwitch toggled={toggled} handleToggle={handleToggle} />
       </div>
       <div className="row">
-        <h1 id="name" className="col-3">
-          <a href="https://www.markgiannelli.com" id="home">
-            Mark Giannelli <br /> Portfolio
-          </a>
-        </h1>
         <nav className="col-7">
           <div className="box">
             <ul id="nav-links" className="row">

@@ -26,11 +26,11 @@ const App2D = () => {
   const [selectedNavLink, setSelectedNavLink] = useState(navLinks[0].name);
   return (
     <div>
-      {/* <Nav
+      <Nav
         navLinks={navLinks}
         selectedNavLink={selectedNavLink}
         setSelectedNavLink={setSelectedNavLink}
-      /> */}
+      />
       <main>
         {selectedNavLink === 'About' ? (
           <>
@@ -50,7 +50,7 @@ const App2D = () => {
           </>
         )}
       </main>
-      {/* <Footer /> */}
+      <Footer />
     </div>
   );
 };
