@@ -4,4 +4,5 @@ export interface DecodedTokenDTO {
   roleId: string;
   customerId: string;
   exp: number;
+  name: string;
 }

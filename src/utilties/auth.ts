@@ -14,7 +14,7 @@ class AuthService {
   }
 
   loggedIn() {
-    const token = this.getToken('id_token');
+    const token = this.getToken('portfolio_token');
     return !!token && !this.isTokenExpired(token);
   }
 
@@ -39,15 +39,19 @@ class AuthService {
     }
   }
 
+  decodeToken(token: string) {
+    return jwtDecode<DecodedTokenDTO>(token);
+  }
+
   login(idToken: string, refreshToken: string) {
-    localStorage.setItem('id_token', idToken);
+    localStorage.setItem('portfolio_token', idToken);
     localStorage.setItem('refresh_token', refreshToken);
 
     window.location.assign('/');
   }
 
   autoLogin(idToken: string, refreshToken: string, studentId: string) {
-    localStorage.setItem('id_token', idToken);
+    localStorage.setItem('portfolio_token', idToken);
     localStorage.setItem('refresh_token', refreshToken);
     localStorage.setItem('studentId', studentId);
 
@@ -55,14 +59,14 @@ class AuthService {
   }
 
   updateToken(idToken: string) {
-    localStorage.setItem('id_token', idToken);
+    localStorage.setItem('portfolio_token', idToken);
   }
 
   async logout() {
-    const loggedInUser = this.getProfile('id_token');
+    const loggedInUser = this.getProfile('portfolio_token');
 
     if (loggedInUser) {
-      localStorage.removeItem('id_token');
+      localStorage.removeItem('portfolio_token');
       localStorage.removeItem('refresh_token');
       localStorage.removeItem('studentId');
 

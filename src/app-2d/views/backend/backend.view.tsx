@@ -13,6 +13,9 @@ const Backend: React.FC = () => {
     apiAwake,
     roles,
     customers,
+    handleDropDownSelection,
+    handleGetAccessToken,
+    tokenClaims,
   } = BackendViewController();
   return (
     <div className="backend-container">
@@ -24,27 +27,18 @@ const Backend: React.FC = () => {
         <div className="loading">
           <FontAwesomeIcon icon={faSpinner} />
         </div>
+      ) : tokenClaims ? (
+        <div>
+          <p>Name: {tokenClaims.name}</p>
+          <p>Username: {tokenClaims.username}</p>
+        </div>
       ) : apiAwake ? (
         <div>
-          <button>Get Access Token</button>
           <div className="dropdowns">
-            <div className="role-dd">
-              <label htmlFor="role">Role</label>
-              <select name="role">
-                <option value="select">---</option>
-                {roles.map((role: string, index: number) => {
-                  return (
-                    <option key={`role-${index}`} value={role}>
-                      {capitalizeFirstLetter(role)}
-                    </option>
-                  );
-                })}
-              </select>
-            </div>
             <div className="customer-dd">
               <label htmlFor="customer">Customer</label>
-              <select name="customer">
-                <option value="select">---</option>
+              <select name="customer" onChange={handleDropDownSelection}>
+                <option value="">---</option>
                 {customers.map((customer: string, index: number) => {
                   return (
                     <option key={`customer-${index}`} value={customer}>
@@ -54,7 +48,21 @@ const Backend: React.FC = () => {
                 })}
               </select>
             </div>
+            <div className="role-dd">
+              <label htmlFor="role">Role</label>
+              <select name="role" onChange={handleDropDownSelection}>
+                <option value="">---</option>
+                {roles.map((role: string, index: number) => {
+                  return (
+                    <option key={`role-${index}`} value={role}>
+                      {capitalizeFirstLetter(role)}
+                    </option>
+                  );
+                })}
+              </select>
+            </div>
           </div>
+          <button onClick={handleGetAccessToken}>Get Access Token</button>
         </div>
       ) : (
         <div>

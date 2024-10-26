@@ -96,15 +96,3 @@ export function formatTitle(title: string): string {
 export function capitalizeFirstLetter(str: string): string {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
-
-export const wakeUpApi = async () => {
-  const resp = await fetch('https://portfolio-backend-ahyh.onrender.com/', {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-    },
-  });
-  const data = await resp;
-  return data;
-};
