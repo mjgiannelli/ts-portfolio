@@ -1,6 +1,22 @@
+import { Dispatch, SetStateAction } from 'react';
+import { API } from '../../api/api';
 import Route from '../route';
 
-const ApiRoutes = () => {
+export interface ApiRoutesProps {
+  token: string;
+  nedCB: Dispatch<SetStateAction<boolean>>;
+}
+
+const ApiRoutes: React.FC<ApiRoutesProps> = ({ token, nedCB }) => {
+  const handleExecuteBtn = async () => {
+    const resp = await API.getAllUsers(token);
+    if (resp.error) {
+      nedCB(true);
+      setTimeout(() => {
+        nedCB(false);
+      }, 3500);
+    }
+  };
   return (
     <div>
       <Route
@@ -15,6 +31,7 @@ const ApiRoutes = () => {
             roleId: 'string',
           },
         }}
+        req={() => handleExecuteBtn()}
       />
     </div>
   );

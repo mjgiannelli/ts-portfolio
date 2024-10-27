@@ -13,6 +13,7 @@ const BackendViewController = () => {
   });
   const [message, setMessage] = useState<string>('');
   const [tokenClaims, setTokenClaims] = useState<DecodedTokenDTO | null>(null);
+  const [tokenStr, setTokenStr] = useState<string | null>(null);
 
   const roles = ['admin', 'user'];
   const customers = ['amazon', 'walmart'];
@@ -39,6 +40,7 @@ const BackendViewController = () => {
     const username = dropDownSelection.customer + dropDownSelection.role;
     const resp = await API.login(username);
     if (resp.token) {
+      setTokenStr(resp.token);
       const decodedToken = auth.decodeToken(resp.token);
       setTokenClaims(decodedToken);
     }
@@ -77,6 +79,8 @@ const BackendViewController = () => {
     tokenClaims,
     message,
     handleChangeUserBtn,
+    tokenStr,
+    setDisplayNed,
   };
 };
 

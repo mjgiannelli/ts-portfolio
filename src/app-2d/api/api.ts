@@ -32,4 +32,17 @@ export class API {
     const data = await resp.json();
     return data;
   }
+
+  public static async getAllUsers(token: string) {
+    const resp = await fetch(this.apiUrl + 'users', {
+      method: 'GET',
+      headers: {
+        Authorization: 'Bearer ' + token,
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+    });
+    const data = await resp.json();
+    return data;
+  }
 }

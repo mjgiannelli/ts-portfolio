@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { MouseEventHandler, useState } from 'react';
 
 export interface RouteProps {
   descrption: string;
@@ -6,6 +6,7 @@ export interface RouteProps {
   reqType: string;
   body?: Record<string, any>;
   response: Record<string, any>;
+  req: MouseEventHandler<HTMLButtonElement>;
 }
 
 const Route: React.FC<RouteProps> = ({
@@ -14,6 +15,7 @@ const Route: React.FC<RouteProps> = ({
   body,
   response,
   reqType,
+  req,
 }) => {
   const [apiResp, setApiResp] = useState<Record<string, any> | null>(null);
   return (
@@ -23,6 +25,7 @@ const Route: React.FC<RouteProps> = ({
       </h2>
       <p>{descrption}</p>
       {body ? <textarea /> : null}
+      <button onClick={req}>Exexcute</button>
       {apiResp ? (
         <pre>{JSON.stringify(response.data, null, 2)}</pre>
       ) : (

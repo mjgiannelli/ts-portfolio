@@ -19,6 +19,8 @@ const Backend: React.FC = () => {
     tokenClaims,
     message,
     handleChangeUserBtn,
+    tokenStr,
+    setDisplayNed,
   } = BackendViewController();
   return (
     <div className="backend-container">
@@ -36,7 +38,7 @@ const Backend: React.FC = () => {
           <button onClick={handleChangeUserBtn}>Change User</button>
           <p>Name: {tokenClaims.name}</p>
           <p>Username: {tokenClaims.username}</p>
-          <ApiRoutes />
+          <ApiRoutes token={tokenStr as string} nedCB={setDisplayNed} />
         </div>
       ) : apiAwake ? (
         <div>
