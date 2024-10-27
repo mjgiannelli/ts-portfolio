@@ -4,6 +4,7 @@ import Newman from '../../components/newman/newman';
 import BackendViewController from './backend.view-controller';
 import './backend.view.scss';
 import { capitalizeFirstLetter } from '../../../utilties/utils';
+import ApiRoutes from '../../components/api-routes/api-routes';
 
 const Backend: React.FC = () => {
   const {
@@ -16,6 +17,8 @@ const Backend: React.FC = () => {
     handleDropDownSelection,
     handleGetAccessToken,
     tokenClaims,
+    message,
+    handleChangeUserBtn,
   } = BackendViewController();
   return (
     <div className="backend-container">
@@ -25,12 +28,15 @@ const Backend: React.FC = () => {
         </div>
       ) : loading ? (
         <div className="loading">
+          {message ? <p>{message}</p> : null}
           <FontAwesomeIcon icon={faSpinner} />
         </div>
       ) : tokenClaims ? (
         <div>
+          <button onClick={handleChangeUserBtn}>Change User</button>
           <p>Name: {tokenClaims.name}</p>
           <p>Username: {tokenClaims.username}</p>
+          <ApiRoutes />
         </div>
       ) : apiAwake ? (
         <div>

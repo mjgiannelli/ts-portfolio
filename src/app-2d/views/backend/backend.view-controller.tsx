@@ -19,6 +19,7 @@ const BackendViewController = () => {
 
   const handleAwakeApiClick = async () => {
     setLoading(true);
+    setMessage('Please allow up to 5 mins. Server needs to wake up.');
     const resp = await API.wakeUpApi();
     if (resp) {
       setApiAwake(true);
@@ -43,8 +44,17 @@ const BackendViewController = () => {
     }
   };
 
+  const handleChangeUserBtn = () => {
+    setLoading(true);
+    setTokenClaims(null);
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+  };
+
   useEffect(() => {
     if (apiAwake) {
+      setMessage('');
       setLoading(false);
     }
   }, [apiAwake]);
@@ -65,6 +75,8 @@ const BackendViewController = () => {
     handleDropDownSelection,
     handleGetAccessToken,
     tokenClaims,
+    message,
+    handleChangeUserBtn,
   };
 };
 
