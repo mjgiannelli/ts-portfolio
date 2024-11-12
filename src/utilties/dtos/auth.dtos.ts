@@ -5,4 +5,5 @@ export interface DecodedTokenDTO {
   customerId: string;
   exp: number;
   name: string;
+  iat: number;
 }

@@ -8,7 +8,6 @@ import ApiRoutes from '../../components/api-routes/api-routes';
 
 const Backend: React.FC = () => {
   const {
-    displayNed,
     handleAwakeApiClick,
     loading,
     apiAwake,
@@ -20,15 +19,10 @@ const Backend: React.FC = () => {
     message,
     handleChangeUserBtn,
     tokenStr,
-    setDisplayNed,
   } = BackendViewController();
   return (
     <div className="backend-container">
-      {displayNed ? (
-        <div className="ned-container">
-          <Newman />
-        </div>
-      ) : loading ? (
+      {loading ? (
         <div className="loading">
           {message ? <p>{message}</p> : null}
           <FontAwesomeIcon icon={faSpinner} />
@@ -38,7 +32,7 @@ const Backend: React.FC = () => {
           <button onClick={handleChangeUserBtn}>Change User</button>
           <p>Name: {tokenClaims.name}</p>
           <p>Username: {tokenClaims.username}</p>
-          <ApiRoutes token={tokenStr as string} nedCB={setDisplayNed} />
+          <ApiRoutes token={tokenStr as string} />
         </div>
       ) : apiAwake ? (
         <div>

@@ -1,17 +1,4 @@
-/* variable declarations */
-:root[theme='Dark'] {
-    --primary-color: #000000;
-    --secondary-color: red;
-    --text-color: #fff;
-    --text-style: Open sans-serif;
-  }
-  
-  html[theme='Light'] {
-    --primary-color: #fff;
-    --secondary-color: red;
-    --text-color: #000000;
-    --text-style: Open sans-serif;
-  }
+@import './variables';
   
   
   /* add default's to weppage AKA Mark Box */

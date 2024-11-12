@@ -31,7 +31,7 @@ const App2D: React.FC<App2DProps> = ({ colorTheme }) => {
     },
   ]);
 
-  const [selectedNavLink, setSelectedNavLink] = useState(navLinks[0].name);
+  const [selectedNavLink, setSelectedNavLink] = useState(navLinks[2].name);
   return (
     <div>
       <Nav

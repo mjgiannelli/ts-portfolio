@@ -1,22 +1,8 @@
 @import '../../variables';
 // Small devices (landscape phones, 0 - 575px)
 @media (min-width: 0px) { 
-    .requests {
-        .tabs {
-            display: flex;
-            justify-content: space-around;
-            h1 {
-                font-size: 1.6rem;
-                width: 100%;
-                text-align: center;
-            }
-            .active-req {
-                background-color: var(--text-color);
-                color: var(--secondary-color);
-            }
-        }
-        .routes {
-            background-color: var(--text-color);
+    .req-container {
+        p {
             color: var(--primary-color);
         }
     }
