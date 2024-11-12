@@ -1,6 +1,5 @@
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Newman from '../../components/newman/newman';
 import BackendViewController from './backend.view-controller';
 import './backend.view.scss';
 import { capitalizeFirstLetter } from '../../../utilties/utils';

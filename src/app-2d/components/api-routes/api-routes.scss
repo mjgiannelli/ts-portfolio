@@ -9,6 +9,7 @@
                 font-size: 1.6rem;
                 width: 100%;
                 text-align: center;
+                cursor: pointer;
             }
             .active-req {
                 background-color: var(--text-color);
@@ -18,6 +19,21 @@
         .routes {
             background-color: var(--text-color);
             color: var(--primary-color);
+            .route-headers {
+                display: flex;
+                justify-content: space-around;
+                background-color: var(--primary-color);
+                color: var(--text-color);
+                h1 {
+                    text-align: center;
+                    width: 100%;
+                    cursor: pointer;
+                }
+                .active-route {
+                    background-color: var(--text-color);
+                    color: var(--secondary-color);
+                }
+            }
         }
     }
 }
