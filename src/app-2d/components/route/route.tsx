@@ -1,33 +1,41 @@
-import { useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import './route.scss';
 import Newman from '../newman/newman';
-import { CreateUserBodyDTO, UpdateUserBodyDTO } from '../../api/api.dto';
+import { CreateUserBodyDTO } from '../../api/api.dto';
+import { Role } from '../../../utilties/enum/enum';
 
 export interface RouteProps {
   description: string;
   className?: string;
   url: string;
   reqType: string;
-  createBody?: CreateUserBodyDTO;
-  updateBody?: UpdateUserBodyDTO;
+  bodyPlaceHolder?: Partial<CreateUserBodyDTO>;
+  createBody?: string;
+  userRole?: string;
+  updateBody?: Partial<CreateUserBodyDTO>;
   response: Record<string, any>;
   req: Function;
+  onRadioBtnChange?: (event: ChangeEvent<HTMLInputElement>) => void | undefined;
+  handleTextAreaChange?: (
+    event: ChangeEvent<HTMLTextAreaElement>,
+  ) => void | undefined;
 }
 
 const Route: React.FC<RouteProps> = ({
   description,
   url,
   createBody,
+  bodyPlaceHolder,
   response,
   className,
   reqType,
   req,
+  onRadioBtnChange,
+  handleTextAreaChange,
+  userRole,
 }) => {
   const [apiResp, setApiResp] = useState<Record<string, any> | null>(null);
   const [displayNed, setDisplayNed] = useState<boolean>(false);
-  const [requestBody, setRequestBody] = useState<string>(
-    JSON.stringify(createBody, null, 2),
-  );
   const handleRequest = async () => {
     const resp = await req();
     if (resp.error) {
@@ -55,13 +63,39 @@ const Route: React.FC<RouteProps> = ({
           {createBody ? (
             <>
               <textarea
-                value={requestBody}
-                defaultValue={JSON.stringify(createBody, null, 2)}
-                onChange={(e) => setRequestBody(e.target.value)}
+                value={createBody}
+                defaultValue={JSON.stringify(bodyPlaceHolder, null, 2)}
+                onChange={handleTextAreaChange}
                 rows={6}
                 cols={30}
               />
-              <input type="radio" name=""></input>
+              <div className="user-role-input">
+                <label>User</label>
+                <input
+                  type="checkbox"
+                  name="user"
+                  onChange={onRadioBtnChange}
+                  checked={userRole === Role.User}
+                />
+              </div>
+              <div className="user-role-input">
+                <label>Admin</label>
+                <input
+                  type="checkbox"
+                  name="admin"
+                  onChange={onRadioBtnChange}
+                  checked={userRole === Role.Admin}
+                />
+              </div>
+              <div className="user-role-input">
+                <label>Super User</label>
+                <input
+                  type="checkbox"
+                  name="superUser"
+                  onChange={onRadioBtnChange}
+                  checked={userRole === Role.Super_User}
+                />
+              </div>
             </>
           ) : null}
           <button onClick={() => handleRequest()}>Exexcute</button>

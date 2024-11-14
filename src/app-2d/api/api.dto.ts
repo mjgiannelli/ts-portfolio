@@ -1,3 +1,5 @@
+import { Role } from '../../utilties/enum/enum';
+
 export interface LoginDTO {
   username: string;
   password: string;
@@ -7,8 +9,8 @@ export interface CreateUserBodyDTO {
   name: string;
   username: string;
   password: string;
-  customerId?: string;
-  userRoleId?: string;
+  customerId: string;
+  roleId: string;
 }
 
 export interface UpdateUserBodyDTO {
@@ -16,5 +18,5 @@ export interface UpdateUserBodyDTO {
   username?: string;
   password?: string;
   customerId?: string;
-  userRoleId?: string;
+  roleId?: string;
 }

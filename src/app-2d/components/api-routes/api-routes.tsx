@@ -3,6 +3,7 @@ import { API } from '../../api/api';
 import Route from '../route/route';
 import './api-routes.scss';
 import { CreateUserBodyDTO } from '../../api/api.dto';
+import { Role } from '../../../utilties/enum/enum';
 
 export interface ApiRoutesProps {
   token: string;
@@ -11,12 +12,21 @@ export interface ApiRoutesProps {
 const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
   const [activeReq, setActiveReq] = useState<string>('get');
   const [activeRoute, setActiveRoute] = useState<string>('get-all');
-  const [createUserBody, setCreateUserBody] = useState<CreateUserBodyDTO>({
-    name: '',
-    username: '',
-    password: '',
-  });
-  const [error, setError] = useState<boolean>(false);
+  const [createUserBody, setCreateUserBody] = useState<
+    Partial<CreateUserBodyDTO>
+  >({ name: 'string', username: 'string', password: 'string' });
+  const [createUserBodyJSON, setCreateUserBodyJSON] = useState<string>(
+    JSON.stringify(
+      { name: 'string', username: 'string', password: 'string' },
+      null,
+      2,
+    ),
+  );
+  const [userRole, setUserRole] = useState<string>('');
+
+  useEffect(() => {
+    setCreateUserBody(JSON.parse(createUserBodyJSON));
+  }, [createUserBodyJSON]);
 
   return (
     <div className="requests">
@@ -215,11 +225,16 @@ const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
                   description="Create an amazon user."
                   url="https://portfolio-backend-ahyh.onrender.com/users"
                   reqType="POST"
-                  createBody={{
+                  createBody={createUserBodyJSON}
+                  bodyPlaceHolder={{
                     name: 'string',
                     username: 'string',
                     password: 'string',
                   }}
+                  userRole={userRole}
+                  handleTextAreaChange={(e) =>
+                    setCreateUserBodyJSON(e.target.value)
+                  }
                   response={{
                     data: [
                       {
@@ -230,8 +245,21 @@ const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
                       },
                     ],
                   }}
-                  req={() => API.createUser(token, 'amazon', createUserBody)}
+                  req={() =>
+                    API.createUser(token, 'amazon', userRole, createUserBody)
+                  }
                   className="req-container"
+                  onRadioBtnChange={(e) =>
+                    setUserRole(
+                      !e.target.checked
+                        ? ''
+                        : e.target.name === 'superUser'
+                          ? Role.Super_User
+                          : e.target.name === 'admin'
+                            ? Role.Admin
+                            : Role.User,
+                    )
+                  }
                 />
               ) : activeRoute === 'create-a-walmart' ? (
                 <Route
@@ -248,7 +276,9 @@ const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
                       },
                     ],
                   }}
-                  req={() => API.createUser(token, 'walmart', createUserBody)}
+                  req={() =>
+                    API.createUser(token, 'walmart', userRole, createUserBody)
+                  }
                   className="req-container"
                 />
               ) : null}

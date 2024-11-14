@@ -78,10 +78,12 @@ export class API {
   public static async createUser(
     token: string,
     customer: string,
-    body: CreateUserBodyDTO,
+    userRole: string,
+    body: Partial<CreateUserBodyDTO>,
   ) {
     body.customerId =
       customer === 'amazon' ? this.amazonCustomerId : this.walmartCustomerId;
+    body.roleId = userRole;
     const resp = await fetch(this.apiUrl + 'users/', {
       method: 'POST',
       headers: {
