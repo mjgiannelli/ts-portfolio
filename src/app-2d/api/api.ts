@@ -1,4 +1,4 @@
-import { LoginDTO } from './api.dto';
+import { CreateUserBodyDTO, LoginDTO } from './api.dto';
 
 export class API {
   static apiUrl = 'https://portfolio-backend-ahyh.onrender.com/';
@@ -39,23 +39,11 @@ export class API {
     return data;
   }
 
-  public static async getAllUsers(token: string) {
-    const resp = await fetch(this.apiUrl + 'users', {
-      method: 'GET',
-      headers: {
-        Authorization: 'Bearer ' + token,
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-      },
-    });
-    const data = await resp.json();
-    return data;
-  }
-
-  public static async getAllAmazonUsers(token: string) {
-    console.log('customer id: ', this.amazonCustomerId);
+  public static async getAllUsers(token: string, customer?: string) {
     const resp = await fetch(
-      this.apiUrl + 'users/customer/' + this.amazonCustomerId,
+      this.apiUrl +
+        'users' +
+        `/${customer === 'amazon' ? `/customer/${this.amazonCustomerId}` : customer === 'walmart' ? `/customer/${this.walmartCustomerId}` : ''}`,
       {
         method: 'GET',
         headers: {
@@ -69,9 +57,11 @@ export class API {
     return data;
   }
 
-  public static async getAllWalmartUsers(token: string) {
+  public static async getUserById(token: string, customer: string) {
     const resp = await fetch(
-      this.apiUrl + 'users/customer/' + this.walmartCustomerId,
+      this.apiUrl +
+        'users/' +
+        `${customer === 'amazon' ? this.amazonUserIdGet : this.walmartUserIdGet}`,
       {
         method: 'GET',
         headers: {
@@ -85,27 +75,21 @@ export class API {
     return data;
   }
 
-  public static async getAmazonUserById(token: string) {
-    const resp = await fetch(this.apiUrl + 'users/' + this.amazonUserIdGet, {
-      method: 'GET',
+  public static async createUser(
+    token: string,
+    customer: string,
+    body: CreateUserBodyDTO,
+  ) {
+    body.customerId =
+      customer === 'amazon' ? this.amazonCustomerId : this.walmartCustomerId;
+    const resp = await fetch(this.apiUrl + 'users/', {
+      method: 'POST',
       headers: {
         Authorization: 'Bearer ' + token,
         'Content-Type': 'application/json',
         Accept: 'application/json',
       },
-    });
-    const data = await resp.json();
-    return data;
-  }
-
-  public static async getWalmartUserById(token: string) {
-    const resp = await fetch(this.apiUrl + 'users/' + this.walmartUserIdGet, {
-      method: 'GET',
-      headers: {
-        Authorization: 'Bearer ' + token,
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-      },
+      body: JSON.stringify(body),
     });
     const data = await resp.json();
     return data;

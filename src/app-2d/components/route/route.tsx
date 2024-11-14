@@ -1,13 +1,15 @@
 import { useState } from 'react';
 import './route.scss';
 import Newman from '../newman/newman';
+import { CreateUserBodyDTO, UpdateUserBodyDTO } from '../../api/api.dto';
 
 export interface RouteProps {
   description: string;
   className?: string;
   url: string;
   reqType: string;
-  body?: Record<string, any>;
+  createBody?: CreateUserBodyDTO;
+  updateBody?: UpdateUserBodyDTO;
   response: Record<string, any>;
   req: Function;
 }
@@ -15,7 +17,7 @@ export interface RouteProps {
 const Route: React.FC<RouteProps> = ({
   description,
   url,
-  body,
+  createBody,
   response,
   className,
   reqType,
@@ -23,6 +25,9 @@ const Route: React.FC<RouteProps> = ({
 }) => {
   const [apiResp, setApiResp] = useState<Record<string, any> | null>(null);
   const [displayNed, setDisplayNed] = useState<boolean>(false);
+  const [requestBody, setRequestBody] = useState<string>(
+    JSON.stringify(createBody, null, 2),
+  );
   const handleRequest = async () => {
     const resp = await req();
     if (resp.error) {
@@ -47,14 +52,31 @@ const Route: React.FC<RouteProps> = ({
         </div>
       ) : (
         <>
-          {body ? <textarea /> : null}
+          {createBody ? (
+            <>
+              <textarea
+                value={requestBody}
+                defaultValue={JSON.stringify(createBody, null, 2)}
+                onChange={(e) => setRequestBody(e.target.value)}
+                rows={6}
+                cols={30}
+              />
+              <input type="radio" name=""></input>
+            </>
+          ) : null}
           <button onClick={() => handleRequest()}>Exexcute</button>
         </>
       )}
       {apiResp ? (
-        <pre>{JSON.stringify(apiResp, null, 2)}</pre>
+        <div className="resp-container">
+          <p>Server Response:</p>
+          <pre>{JSON.stringify(apiResp, null, 2)}</pre>
+        </div>
       ) : (
-        <pre>{JSON.stringify(response.data, null, 2)}</pre>
+        <div className="resp-container">
+          <p>Response Example:</p>
+          <pre>{JSON.stringify(response.data, null, 2)}</pre>
+        </div>
       )}
     </div>
   );

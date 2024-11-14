@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { API } from '../../api/api';
 import Route from '../route/route';
 import './api-routes.scss';
+import { CreateUserBodyDTO } from '../../api/api.dto';
 
 export interface ApiRoutesProps {
   token: string;
@@ -10,6 +11,11 @@ export interface ApiRoutesProps {
 const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
   const [activeReq, setActiveReq] = useState<string>('get');
   const [activeRoute, setActiveRoute] = useState<string>('get-all');
+  const [createUserBody, setCreateUserBody] = useState<CreateUserBodyDTO>({
+    name: '',
+    username: '',
+    password: '',
+  });
   const [error, setError] = useState<boolean>(false);
 
   return (
@@ -129,7 +135,7 @@ const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
                       },
                     ],
                   }}
-                  req={() => API.getAllAmazonUsers(token)}
+                  req={() => API.getAllUsers(token, 'amazon')}
                   className="req-container"
                 />
               ) : activeRoute === 'get-all-walmart' ? (
@@ -147,7 +153,7 @@ const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
                       },
                     ],
                   }}
-                  req={() => API.getAllWalmartUsers(token)}
+                  req={() => API.getAllUsers(token, 'walmart')}
                   className="req-container"
                 />
               ) : activeRoute === 'get-an-amazon' ? (
@@ -163,7 +169,7 @@ const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
                       roleId: 'string',
                     },
                   }}
-                  req={() => API.getAmazonUserById(token)}
+                  req={() => API.getUserById(token, 'amazon')}
                   className="req-container"
                 />
               ) : activeRoute === 'get-a-walmart' ? (
@@ -179,7 +185,7 @@ const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
                       roleId: 'string',
                     },
                   }}
-                  req={() => API.getWalmartUserById(token)}
+                  req={() => API.getUserById(token, 'walmart')}
                   className="req-container"
                 />
               ) : null}
@@ -204,6 +210,48 @@ const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
                   Create Walmart User
                 </h1>
               </div>
+              {activeRoute === 'create-an-amazon' ? (
+                <Route
+                  description="Create an amazon user."
+                  url="https://portfolio-backend-ahyh.onrender.com/users"
+                  reqType="POST"
+                  createBody={{
+                    name: 'string',
+                    username: 'string',
+                    password: 'string',
+                  }}
+                  response={{
+                    data: [
+                      {
+                        name: 'string',
+                        username: 'string',
+                        customerId: 'string',
+                        roleId: 'string',
+                      },
+                    ],
+                  }}
+                  req={() => API.createUser(token, 'amazon', createUserBody)}
+                  className="req-container"
+                />
+              ) : activeRoute === 'create-a-walmart' ? (
+                <Route
+                  description="Get all Amazon users in database."
+                  url="https://portfolio-backend-ahyh.onrender.com/users"
+                  reqType="GET"
+                  response={{
+                    data: [
+                      {
+                        name: 'string',
+                        username: 'string',
+                        customerId: 'string',
+                        roleId: 'string',
+                      },
+                    ],
+                  }}
+                  req={() => API.createUser(token, 'walmart', createUserBody)}
+                  className="req-container"
+                />
+              ) : null}
             </>
           ) : activeReq === 'patch' ? (
             <>
