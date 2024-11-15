@@ -1,3 +1,4 @@
+import { UserId } from '../../utilties/enum/enum';
 import { CreateUserBodyDTO, LoginDTO } from './api.dto';
 
 export class API {
@@ -5,10 +6,6 @@ export class API {
   static password = 'password';
   static amazonCustomerId = '67143e89f2d2934ae81d9c2e';
   static walmartCustomerId = '67143e9bf2d2934ae81d9c30';
-  static amazonUserIdGet = '67143f2ef2d2934ae81d9c34';
-  static walmartUserIdGet = '671490fee87b2f5922668902';
-  static amazonUserIdPatch = '6726e4b1e0672fdc722aea23';
-  static walmartUserIdPatch = '671490fee87b2f5922668902';
 
   public static async wakeUpApi() {
     const resp = await fetch(this.apiUrl, {
@@ -61,7 +58,7 @@ export class API {
     const resp = await fetch(
       this.apiUrl +
         'users/' +
-        `${customer === 'amazon' ? this.amazonUserIdGet : this.walmartUserIdGet}`,
+        `${customer === 'amazon' ? UserId.Amazon_User : UserId.Walmart_User}`,
       {
         method: 'GET',
         headers: {
@@ -84,14 +81,28 @@ export class API {
     body.customerId =
       customer === 'amazon' ? this.amazonCustomerId : this.walmartCustomerId;
     body.roleId = userRole;
-    const resp = await fetch(this.apiUrl + 'users/', {
-      method: 'POST',
+    console.log('body: ', body);
+    // const resp = await fetch(this.apiUrl + 'users/', {
+    //   method: 'POST',
+    //   headers: {
+    //     Authorization: 'Bearer ' + token,
+    //     'Content-Type': 'application/json',
+    //     Accept: 'application/json',
+    //   },
+    //   body: JSON.stringify(body),
+    // });
+    // const data = await resp.json();
+    // return data;
+  }
+
+  public static async deleteUser(token: string, userId: string) {
+    const resp = await fetch(this.apiUrl + `users/${userId}`, {
+      method: 'DELETE',
       headers: {
         Authorization: 'Bearer ' + token,
         'Content-Type': 'application/json',
         Accept: 'application/json',
       },
-      body: JSON.stringify(body),
     });
     const data = await resp.json();
     return data;

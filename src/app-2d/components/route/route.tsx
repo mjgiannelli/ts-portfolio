@@ -2,9 +2,10 @@ import { ChangeEvent, useState } from 'react';
 import './route.scss';
 import Newman from '../newman/newman';
 import { CreateUserBodyDTO } from '../../api/api.dto';
-import { Role } from '../../../utilties/enum/enum';
+import { Role, UserId } from '../../../utilties/enum/enum';
 
 export interface RouteProps {
+  route?: string;
   description: string;
   className?: string;
   url: string;
@@ -19,6 +20,8 @@ export interface RouteProps {
   handleTextAreaChange?: (
     event: ChangeEvent<HTMLTextAreaElement>,
   ) => void | undefined;
+  userId?: string;
+  onUserIdChange?: (event: ChangeEvent<HTMLInputElement>) => void | undefined;
 }
 
 const Route: React.FC<RouteProps> = ({
@@ -33,20 +36,24 @@ const Route: React.FC<RouteProps> = ({
   onRadioBtnChange,
   handleTextAreaChange,
   userRole,
+  userId,
+  onUserIdChange,
+  route,
 }) => {
   const [apiResp, setApiResp] = useState<Record<string, any> | null>(null);
   const [displayNed, setDisplayNed] = useState<boolean>(false);
   const handleRequest = async () => {
-    const resp = await req();
-    if (resp.error) {
-      setDisplayNed(true);
-      setApiResp(resp);
-      setTimeout(() => {
-        setDisplayNed(false);
-      }, 3500);
-      return;
-    }
-    setApiResp(resp);
+    console.log('userId: ', userId);
+    // const resp = await req();
+    // if (resp.error) {
+    //   setDisplayNed(true);
+    //   setApiResp(resp);
+    //   setTimeout(() => {
+    //     setDisplayNed(false);
+    //   }, 3500);
+    //   return;
+    // }
+    // setApiResp(resp);
   };
   return (
     <div className={className ? className : ''}>
@@ -94,6 +101,50 @@ const Route: React.FC<RouteProps> = ({
                   name="superUser"
                   onChange={onRadioBtnChange}
                   checked={userRole === Role.Super_User}
+                />
+              </div>
+            </>
+          ) : (reqType === 'PATCH' || reqType === 'DELETE') &&
+            route === 'delete-an-amazon' ? (
+            <>
+              <div className="user-role-input">
+                <label>Amazon Admin</label>
+                <input
+                  type="checkbox"
+                  name="amazonAdmin"
+                  onChange={onUserIdChange}
+                  checked={userId === UserId.Amazon_Admin}
+                />
+              </div>
+              <div className="user-role-input">
+                <label>Amazon User</label>
+                <input
+                  type="checkbox"
+                  name="amazonUser"
+                  onChange={onUserIdChange}
+                  checked={userId === UserId.Amazon_User}
+                />
+              </div>
+            </>
+          ) : (reqType === 'PATCH' || reqType === 'DELETE') &&
+            route === 'delete-a-walmart' ? (
+            <>
+              <div className="user-role-input">
+                <label>Walmart Admin</label>
+                <input
+                  type="checkbox"
+                  name="walmartAdmin"
+                  onChange={onUserIdChange}
+                  checked={userId === UserId.Walmart_Admin}
+                />
+              </div>
+              <div className="user-role-input">
+                <label>Walmart User</label>
+                <input
+                  type="checkbox"
+                  name="walmartUser"
+                  onChange={onUserIdChange}
+                  checked={userId === UserId.Walmart_User}
                 />
               </div>
             </>

@@ -3,7 +3,7 @@ import { API } from '../../api/api';
 import Route from '../route/route';
 import './api-routes.scss';
 import { CreateUserBodyDTO } from '../../api/api.dto';
-import { Role } from '../../../utilties/enum/enum';
+import { Role, UserId } from '../../../utilties/enum/enum';
 
 export interface ApiRoutesProps {
   token: string;
@@ -23,6 +23,7 @@ const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
     ),
   );
   const [userRole, setUserRole] = useState<string>('');
+  const [userId, setUserId] = useState<string>('');
 
   useEffect(() => {
     setCreateUserBody(JSON.parse(createUserBodyJSON));
@@ -263,9 +264,19 @@ const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
                 />
               ) : activeRoute === 'create-a-walmart' ? (
                 <Route
-                  description="Get all Amazon users in database."
+                  description="Create an walmart user."
                   url="https://portfolio-backend-ahyh.onrender.com/users"
-                  reqType="GET"
+                  reqType="POST"
+                  createBody={createUserBodyJSON}
+                  bodyPlaceHolder={{
+                    name: 'string',
+                    username: 'string',
+                    password: 'string',
+                  }}
+                  userRole={userRole}
+                  handleTextAreaChange={(e) =>
+                    setCreateUserBodyJSON(e.target.value)
+                  }
                   response={{
                     data: [
                       {
@@ -277,9 +288,20 @@ const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
                     ],
                   }}
                   req={() =>
-                    API.createUser(token, 'walmart', userRole, createUserBody)
+                    API.createUser(token, 'amazon', userRole, createUserBody)
                   }
                   className="req-container"
+                  onRadioBtnChange={(e) =>
+                    setUserRole(
+                      !e.target.checked
+                        ? ''
+                        : e.target.name === 'superUser'
+                          ? Role.Super_User
+                          : e.target.name === 'admin'
+                            ? Role.Admin
+                            : Role.User,
+                    )
+                  }
                 />
               ) : null}
             </>
@@ -324,6 +346,55 @@ const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
                   Delete Walmart User
                 </h1>
               </div>
+              {activeRoute === 'delete-an-amazon' ? (
+                <Route
+                  route={activeRoute}
+                  description="Delete an amazon user."
+                  url="https://portfolio-backend-ahyh.onrender.com/users"
+                  reqType="DELETE"
+                  response={{
+                    data: {
+                      statusCode: 201,
+                    },
+                  }}
+                  req={() => API.deleteUser(token, userId)}
+                  className="req-container"
+                  userId={userId}
+                  onUserIdChange={(e) =>
+                    setUserId(
+                      !e.target.checked
+                        ? ''
+                        : e.target.name === 'amazonAdmin'
+                          ? UserId.Amazon_Admin
+                          : UserId.Amazon_User,
+                    )
+                  }
+                />
+              ) : activeRoute === 'delete-a-walmart' ? (
+                <Route
+                  route={activeRoute}
+                  description="Delete a walmart user."
+                  url="https://portfolio-backend-ahyh.onrender.com/users"
+                  reqType="DELETE"
+                  response={{
+                    data: {
+                      statusCode: 201,
+                    },
+                  }}
+                  req={() => API.deleteUser(token, userId)}
+                  className="req-container"
+                  userId={userId}
+                  onUserIdChange={(e) =>
+                    setUserId(
+                      !e.target.checked
+                        ? ''
+                        : e.target.name === 'walmartAdmin'
+                          ? UserId.Walmart_Admin
+                          : UserId.Walmart_User,
+                    )
+                  }
+                />
+              ) : null}
             </>
           ) : null}
         </>
