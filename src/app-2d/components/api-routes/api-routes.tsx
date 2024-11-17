@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { API } from '../../api/api';
 import Route from '../route/route';
 import './api-routes.scss';
-import { CreateUserBodyDTO } from '../../api/api.dto';
+import { CreateUserBodyDTO, UpdateUserBodyDTO } from '../../api/api.dto';
 import { Role, UserId } from '../../../utilties/enum/enum';
 
 export interface ApiRoutesProps {
@@ -22,12 +22,26 @@ const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
       2,
     ),
   );
+  const [updateUserBody, setUpdateUserBody] = useState<
+    Partial<UpdateUserBodyDTO>
+  >({ name: 'string', username: 'string', password: 'string' });
+  const [updateUserBodyJSON, setUpdateUserBodyJSON] = useState<string>(
+    JSON.stringify(
+      { name: 'string', username: 'string', password: 'string' },
+      null,
+      2,
+    ),
+  );
   const [userRole, setUserRole] = useState<string>('');
   const [userId, setUserId] = useState<string>('');
 
   useEffect(() => {
     setCreateUserBody(JSON.parse(createUserBodyJSON));
   }, [createUserBodyJSON]);
+
+  useEffect(() => {
+    setUpdateUserBody(JSON.parse(updateUserBodyJSON));
+  }, [updateUserBodyJSON]);
 
   return (
     <div className="requests">
@@ -288,7 +302,7 @@ const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
                     ],
                   }}
                   req={() =>
-                    API.createUser(token, 'amazon', userRole, createUserBody)
+                    API.createUser(token, 'walmart', userRole, createUserBody)
                   }
                   className="req-container"
                   onRadioBtnChange={(e) =>
@@ -325,6 +339,89 @@ const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
                   Update Walmart User
                 </h1>
               </div>
+              {activeRoute === 'update-an-amazon' ? (
+                <Route
+                  description="Update an amazon user."
+                  url="https://portfolio-backend-ahyh.onrender.com/users"
+                  reqType="PATCH"
+                  updateBody={updateUserBodyJSON}
+                  bodyPlaceHolder={{
+                    name: 'string',
+                    username: 'string',
+                    password: 'string',
+                  }}
+                  userRole={userRole}
+                  handleTextAreaChange={(e) =>
+                    setUpdateUserBodyJSON(e.target.value)
+                  }
+                  response={{
+                    data: [
+                      {
+                        name: 'string',
+                        username: 'string',
+                        customerId: 'string',
+                        roleId: 'string',
+                      },
+                    ],
+                  }}
+                  req={() =>
+                    API.updateUser(token, 'amazon', userRole, updateUserBody)
+                  }
+                  className="req-container"
+                  onRadioBtnChange={(e) =>
+                    setUserRole(
+                      !e.target.checked
+                        ? ''
+                        : e.target.name === 'superUser'
+                          ? Role.Super_User
+                          : e.target.name === 'admin'
+                            ? Role.Admin
+                            : Role.User,
+                    )
+                  }
+                />
+              ) : activeRoute === 'update-a-walmart' ? (
+                <Route
+                  description="Update an walmart user."
+                  url="https://portfolio-backend-ahyh.onrender.com/users"
+                  reqType="PATCH"
+                  updateBody={updateUserBodyJSON}
+                  bodyPlaceHolder={{
+                    name: 'string',
+                    username: 'string',
+                    password: 'string',
+                  }}
+                  userRole={userRole}
+                  handleTextAreaChange={(e) =>
+                    setUpdateUserBodyJSON(e.target.value)
+                  }
+                  response={{
+                    data: [
+                      {
+                        name: 'string',
+                        username: 'string',
+                        customerId: 'string',
+                        roleId: 'string',
+                      },
+                    ],
+                  }}
+                  req={() =>
+                    API.updateUser(token, 'walmart', userRole, updateUserBody)
+                  }
+                  className="req-container"
+                  onRadioBtnChange={(e) =>
+                    setUserRole(
+                      !e.target.checked
+                        ? ''
+                        : e.target.name === 'superUser'
+                          ? Role.Super_User
+                          : e.target.name === 'admin'
+                            ? Role.Admin
+                            : Role.User,
+                    )
+                  }
+                />
+              ) : null}
             </>
           ) : activeReq === 'delete' ? (
             <>

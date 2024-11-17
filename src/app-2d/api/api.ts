@@ -1,5 +1,5 @@
 import { UserId } from '../../utilties/enum/enum';
-import { CreateUserBodyDTO, LoginDTO } from './api.dto';
+import { CreateUserBodyDTO, LoginDTO, UpdateUserBodyDTO } from './api.dto';
 
 export class API {
   static apiUrl = 'https://portfolio-backend-ahyh.onrender.com/';
@@ -106,5 +106,28 @@ export class API {
     });
     const data = await resp.json();
     return data;
+  }
+
+  public static async updateUser(
+    token: string,
+    customer: string,
+    userRole: string,
+    body: Partial<UpdateUserBodyDTO>,
+  ) {
+    body.customerId =
+      customer === 'amazon' ? this.amazonCustomerId : this.walmartCustomerId;
+    body.roleId = userRole;
+    console.log('body: ', body);
+    // const resp = await fetch(this.apiUrl + 'users/', {
+    //   method: 'PATCH',
+    //   headers: {
+    //     Authorization: 'Bearer ' + token,
+    //     'Content-Type': 'application/json',
+    //     Accept: 'application/json',
+    //   },
+    //   body: JSON.stringify(body),
+    // });
+    // const data = await resp.json();
+    // return data;
   }
 }

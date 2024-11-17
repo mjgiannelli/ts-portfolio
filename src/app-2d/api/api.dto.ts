@@ -1,5 +1,3 @@
-import { Role } from '../../utilties/enum/enum';
-
 export interface LoginDTO {
   username: string;
   password: string;

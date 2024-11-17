@@ -13,7 +13,7 @@ export interface RouteProps {
   bodyPlaceHolder?: Partial<CreateUserBodyDTO>;
   createBody?: string;
   userRole?: string;
-  updateBody?: Partial<CreateUserBodyDTO>;
+  updateBody?: string;
   response: Record<string, any>;
   req: Function;
   onRadioBtnChange?: (event: ChangeEvent<HTMLInputElement>) => void | undefined;
@@ -39,6 +39,7 @@ const Route: React.FC<RouteProps> = ({
   userId,
   onUserIdChange,
   route,
+  updateBody,
 }) => {
   const [apiResp, setApiResp] = useState<Record<string, any> | null>(null);
   const [displayNed, setDisplayNed] = useState<boolean>(false);
@@ -67,7 +68,7 @@ const Route: React.FC<RouteProps> = ({
         </div>
       ) : (
         <>
-          {createBody ? (
+          {createBody || updateBody ? (
             <>
               <textarea
                 value={createBody}
