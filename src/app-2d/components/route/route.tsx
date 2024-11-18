@@ -22,6 +22,7 @@ export interface RouteProps {
   ) => void | undefined;
   userId?: string;
   onUserIdChange?: (event: ChangeEvent<HTMLInputElement>) => void | undefined;
+  jsonError?: string | null;
 }
 
 const Route: React.FC<RouteProps> = ({
@@ -40,6 +41,7 @@ const Route: React.FC<RouteProps> = ({
   onUserIdChange,
   route,
   updateBody,
+  jsonError,
 }) => {
   const [apiResp, setApiResp] = useState<Record<string, any> | null>(null);
   const [displayNed, setDisplayNed] = useState<boolean>(false);
@@ -68,7 +70,7 @@ const Route: React.FC<RouteProps> = ({
         </div>
       ) : (
         <>
-          {createBody || updateBody ? (
+          {createBody || updateBody || jsonError ? (
             <>
               <textarea
                 value={createBody}
@@ -104,6 +106,7 @@ const Route: React.FC<RouteProps> = ({
                   checked={userRole === Role.Super_User}
                 />
               </div>
+              {jsonError ? <p>{jsonError}</p> : null}
             </>
           ) : (reqType === 'PATCH' || reqType === 'DELETE') &&
             route === 'delete-an-amazon' ? (

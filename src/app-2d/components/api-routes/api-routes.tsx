@@ -12,9 +12,8 @@ export interface ApiRoutesProps {
 const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
   const [activeReq, setActiveReq] = useState<string>('get');
   const [activeRoute, setActiveRoute] = useState<string>('get-all');
-  const [createUserBody, setCreateUserBody] = useState<
-    Partial<CreateUserBodyDTO>
-  >({ name: 'string', username: 'string', password: 'string' });
+  const [createUserBody, setCreateUserBody] =
+    useState<Partial<CreateUserBodyDTO> | null>(null);
   const [createUserBodyJSON, setCreateUserBodyJSON] = useState<string>(
     JSON.stringify(
       { name: 'string', username: 'string', password: 'string' },
@@ -22,9 +21,8 @@ const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
       2,
     ),
   );
-  const [updateUserBody, setUpdateUserBody] = useState<
-    Partial<UpdateUserBodyDTO>
-  >({ name: 'string', username: 'string', password: 'string' });
+  const [updateUserBody, setUpdateUserBody] =
+    useState<Partial<UpdateUserBodyDTO | null>>(null);
   const [updateUserBodyJSON, setUpdateUserBodyJSON] = useState<string>(
     JSON.stringify(
       { name: 'string', username: 'string', password: 'string' },
@@ -32,15 +30,38 @@ const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
       2,
     ),
   );
+  const [jsonError, setJsonError] = useState<string | null>(null);
   const [userRole, setUserRole] = useState<string>('');
   const [userId, setUserId] = useState<string>('');
 
   useEffect(() => {
-    setCreateUserBody(JSON.parse(createUserBodyJSON));
+    try {
+      const parsedData = JSON.parse(createUserBodyJSON);
+      setCreateUserBody(parsedData);
+      setJsonError(null);
+    } catch (error) {
+      if (error instanceof Error) {
+        setJsonError(`JSON Parse Error: ${error.message}`);
+      } else {
+        setJsonError('Unknown error occurred');
+      }
+      setCreateUserBody({});
+    }
   }, [createUserBodyJSON]);
 
   useEffect(() => {
-    setUpdateUserBody(JSON.parse(updateUserBodyJSON));
+    try {
+      const parsedData = JSON.parse(updateUserBodyJSON);
+      setUpdateUserBody(parsedData);
+      setJsonError(null);
+    } catch (error) {
+      if (error instanceof Error) {
+        setJsonError(`JSON Parse Error: ${error.message}`);
+      } else {
+        setJsonError('Unknown error occurred');
+      }
+      setUpdateUserBody({});
+    }
   }, [updateUserBodyJSON]);
 
   return (
@@ -261,7 +282,12 @@ const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
                     ],
                   }}
                   req={() =>
-                    API.createUser(token, 'amazon', userRole, createUserBody)
+                    API.createUser(
+                      token,
+                      'amazon',
+                      userRole,
+                      createUserBody as Partial<CreateUserBodyDTO>,
+                    )
                   }
                   className="req-container"
                   onRadioBtnChange={(e) =>
@@ -275,6 +301,7 @@ const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
                             : Role.User,
                     )
                   }
+                  jsonError={jsonError}
                 />
               ) : activeRoute === 'create-a-walmart' ? (
                 <Route
@@ -302,7 +329,12 @@ const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
                     ],
                   }}
                   req={() =>
-                    API.createUser(token, 'walmart', userRole, createUserBody)
+                    API.createUser(
+                      token,
+                      'walmart',
+                      userRole,
+                      createUserBody as Partial<CreateUserBodyDTO>,
+                    )
                   }
                   className="req-container"
                   onRadioBtnChange={(e) =>
@@ -316,6 +348,7 @@ const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
                             : Role.User,
                     )
                   }
+                  jsonError={jsonError}
                 />
               ) : null}
             </>
@@ -365,7 +398,12 @@ const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
                     ],
                   }}
                   req={() =>
-                    API.updateUser(token, 'amazon', userRole, updateUserBody)
+                    API.updateUser(
+                      token,
+                      'amazon',
+                      userRole,
+                      updateUserBody as Partial<UpdateUserBodyDTO>,
+                    )
                   }
                   className="req-container"
                   onRadioBtnChange={(e) =>
@@ -379,6 +417,7 @@ const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
                             : Role.User,
                     )
                   }
+                  jsonError={jsonError}
                 />
               ) : activeRoute === 'update-a-walmart' ? (
                 <Route
@@ -406,7 +445,12 @@ const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
                     ],
                   }}
                   req={() =>
-                    API.updateUser(token, 'walmart', userRole, updateUserBody)
+                    API.updateUser(
+                      token,
+                      'walmart',
+                      userRole,
+                      updateUserBody as Partial<UpdateUserBodyDTO>,
+                    )
                   }
                   className="req-container"
                   onRadioBtnChange={(e) =>
@@ -420,6 +464,7 @@ const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
                             : Role.User,
                     )
                   }
+                  jsonError={jsonError}
                 />
               ) : null}
             </>
