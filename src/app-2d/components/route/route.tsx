@@ -1,7 +1,7 @@
 import { ChangeEvent, useState } from 'react';
 import './route.scss';
 import Newman from '../newman/newman';
-import { CreateUserBodyDTO } from '../../api/api.dto';
+import { CreateUserBodyDTO } from '../../api/dtos/api.dto';
 import { Role, UserId } from '../../../utilties/enum/enum';
 
 export interface RouteProps {
@@ -46,17 +46,16 @@ const Route: React.FC<RouteProps> = ({
   const [apiResp, setApiResp] = useState<Record<string, any> | null>(null);
   const [displayNed, setDisplayNed] = useState<boolean>(false);
   const handleRequest = async () => {
-    console.log('userId: ', userId);
-    // const resp = await req();
-    // if (resp.error) {
-    //   setDisplayNed(true);
-    //   setApiResp(resp);
-    //   setTimeout(() => {
-    //     setDisplayNed(false);
-    //   }, 3500);
-    //   return;
-    // }
-    // setApiResp(resp);
+    const resp = await req();
+    if (resp.error) {
+      setDisplayNed(true);
+      setApiResp(resp);
+      setTimeout(() => {
+        setDisplayNed(false);
+      }, 3500);
+      return;
+    }
+    setApiResp(resp);
   };
   return (
     <div className={className ? className : ''}>

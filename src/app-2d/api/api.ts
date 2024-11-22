@@ -1,5 +1,5 @@
 import { UserId } from '../../utilties/enum/enum';
-import { CreateUserBodyDTO, LoginDTO, UpdateUserBodyDTO } from './api.dto';
+import { CreateUserBodyDTO, LoginDTO, UpdateUserBodyDTO } from './dtos/api.dto';
 
 export class API {
   static apiUrl = 'https://portfolio-backend-ahyh.onrender.com/';
@@ -40,7 +40,7 @@ export class API {
     const resp = await fetch(
       this.apiUrl +
         'users' +
-        `/${customer === 'amazon' ? `/customer/${this.amazonCustomerId}` : customer === 'walmart' ? `/customer/${this.walmartCustomerId}` : ''}`,
+        `/${customer === 'amazon' ? `customer/${this.amazonCustomerId}` : customer === 'walmart' ? `customer/${this.walmartCustomerId}` : ''}`,
       {
         method: 'GET',
         headers: {
@@ -78,21 +78,21 @@ export class API {
     userRole: string,
     body: Partial<CreateUserBodyDTO>,
   ) {
+    if (body.roleId) delete body['roleId'];
     body.customerId =
       customer === 'amazon' ? this.amazonCustomerId : this.walmartCustomerId;
     body.roleId = userRole;
-    console.log('body: ', body);
-    // const resp = await fetch(this.apiUrl + 'users/', {
-    //   method: 'POST',
-    //   headers: {
-    //     Authorization: 'Bearer ' + token,
-    //     'Content-Type': 'application/json',
-    //     Accept: 'application/json',
-    //   },
-    //   body: JSON.stringify(body),
-    // });
-    // const data = await resp.json();
-    // return data;
+    const resp = await fetch(this.apiUrl + 'users', {
+      method: 'POST',
+      headers: {
+        Authorization: 'Bearer ' + token,
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+      body: JSON.stringify(body),
+    });
+    const data = await resp.json();
+    return data;
   }
 
   public static async deleteUser(token: string, userId: string) {
@@ -111,23 +111,26 @@ export class API {
   public static async updateUser(
     token: string,
     customer: string,
-    userRole: string,
+    userRole: string | null,
     body: Partial<UpdateUserBodyDTO>,
   ) {
-    body.customerId =
-      customer === 'amazon' ? this.amazonCustomerId : this.walmartCustomerId;
-    body.roleId = userRole;
-    console.log('body: ', body);
-    // const resp = await fetch(this.apiUrl + 'users/', {
-    //   method: 'PATCH',
-    //   headers: {
-    //     Authorization: 'Bearer ' + token,
-    //     'Content-Type': 'application/json',
-    //     Accept: 'application/json',
-    //   },
-    //   body: JSON.stringify(body),
-    // });
-    // const data = await resp.json();
-    // return data;
+    if (body.roleId) delete body['roleId'];
+    if (userRole !== '') body.roleId = userRole as string;
+    const resp = await fetch(
+      this.apiUrl +
+        'users/' +
+        (customer === 'amazon' ? UserId.Amazon_User : UserId.Walmart_User),
+      {
+        method: 'PATCH',
+        headers: {
+          Authorization: 'Bearer ' + token,
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify(body),
+      },
+    );
+    const data = await resp.json();
+    return data;
   }
 }

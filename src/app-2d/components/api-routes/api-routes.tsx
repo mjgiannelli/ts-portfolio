@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { API } from '../../api/api';
 import Route from '../route/route';
 import './api-routes.scss';
-import { CreateUserBodyDTO, UpdateUserBodyDTO } from '../../api/api.dto';
+import { CreateUserBodyDTO, UpdateUserBodyDTO } from '../../api/dtos/api.dto';
 import { Role, UserId } from '../../../utilties/enum/enum';
 
 export interface ApiRoutesProps {
@@ -406,7 +406,7 @@ const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
                     )
                   }
                   className="req-container"
-                  onRadioBtnChange={(e) =>
+                  onRadioBtnChange={(e) => {
                     setUserRole(
                       !e.target.checked
                         ? ''
@@ -415,8 +415,8 @@ const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
                           : e.target.name === 'admin'
                             ? Role.Admin
                             : Role.User,
-                    )
-                  }
+                    );
+                  }}
                   jsonError={jsonError}
                 />
               ) : activeRoute === 'update-a-walmart' ? (
@@ -453,7 +453,7 @@ const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
                     )
                   }
                   className="req-container"
-                  onRadioBtnChange={(e) =>
+                  onRadioBtnChange={(e) => {
                     setUserRole(
                       !e.target.checked
                         ? ''
@@ -462,8 +462,8 @@ const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
                           : e.target.name === 'admin'
                             ? Role.Admin
                             : Role.User,
-                    )
-                  }
+                    );
+                  }}
                   jsonError={jsonError}
                 />
               ) : null}
@@ -526,15 +526,15 @@ const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
                   req={() => API.deleteUser(token, userId)}
                   className="req-container"
                   userId={userId}
-                  onUserIdChange={(e) =>
+                  onUserIdChange={(e) => {
                     setUserId(
                       !e.target.checked
                         ? ''
                         : e.target.name === 'walmartAdmin'
                           ? UserId.Walmart_Admin
                           : UserId.Walmart_User,
-                    )
-                  }
+                    );
+                  }}
                 />
               ) : null}
             </>
