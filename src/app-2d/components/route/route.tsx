@@ -22,7 +22,8 @@ export interface RouteProps {
   ) => void | undefined;
   userId?: string;
   onUserIdChange?: (event: ChangeEvent<HTMLInputElement>) => void | undefined;
-  jsonError?: string | null;
+  errorMessage?: string | null;
+  handleResetJsonBtn?: Function;
 }
 
 const Route: React.FC<RouteProps> = ({
@@ -41,13 +42,14 @@ const Route: React.FC<RouteProps> = ({
   onUserIdChange,
   route,
   updateBody,
-  jsonError,
+  errorMessage,
+  handleResetJsonBtn,
 }) => {
   const [apiResp, setApiResp] = useState<Record<string, any> | null>(null);
   const [displayNed, setDisplayNed] = useState<boolean>(false);
   const handleRequest = async () => {
     const resp = await req();
-    if (resp.error) {
+    if (resp && resp.error) {
       setDisplayNed(true);
       setApiResp(resp);
       setTimeout(() => {
@@ -69,10 +71,13 @@ const Route: React.FC<RouteProps> = ({
         </div>
       ) : (
         <>
-          {createBody || updateBody || jsonError ? (
+          {createBody || updateBody || errorMessage ? (
             <>
+              {handleResetJsonBtn ? (
+                <button onClick={() => handleResetJsonBtn()}>Reset</button>
+              ) : null}
               <textarea
-                value={createBody}
+                value={reqType === 'POST' ? createBody : updateBody}
                 defaultValue={JSON.stringify(bodyPlaceHolder, null, 2)}
                 onChange={handleTextAreaChange}
                 rows={6}
@@ -105,7 +110,7 @@ const Route: React.FC<RouteProps> = ({
                   checked={userRole === Role.Super_User}
                 />
               </div>
-              {jsonError ? <p>{jsonError}</p> : null}
+              {errorMessage ? <p>{errorMessage}</p> : null}
             </>
           ) : (reqType === 'PATCH' || reqType === 'DELETE') &&
             route === 'delete-an-amazon' ? (
@@ -152,7 +157,12 @@ const Route: React.FC<RouteProps> = ({
               </div>
             </>
           ) : null}
-          <button onClick={() => handleRequest()}>Exexcute</button>
+          <button
+            onClick={() => handleRequest()}
+            style={{ visibility: errorMessage ? 'hidden' : 'visible' }}
+          >
+            Exexcute
+          </button>
         </>
       )}
       {apiResp ? (

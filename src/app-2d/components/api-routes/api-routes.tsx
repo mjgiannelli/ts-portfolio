@@ -30,7 +30,10 @@ const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
       2,
     ),
   );
-  const [jsonError, setJsonError] = useState<string | null>(null);
+  const [postErrorMessage, setPostErrorMessage] = useState<string | null>(null);
+  const [patchErrorMessage, setPatchErrorMessage] = useState<string | null>(
+    null,
+  );
   const [userRole, setUserRole] = useState<string>('');
   const [userId, setUserId] = useState<string>('');
 
@@ -38,12 +41,12 @@ const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
     try {
       const parsedData = JSON.parse(createUserBodyJSON);
       setCreateUserBody(parsedData);
-      setJsonError(null);
+      setPostErrorMessage(null);
     } catch (error) {
       if (error instanceof Error) {
-        setJsonError(`JSON Parse Error: ${error.message}`);
+        setPostErrorMessage(`JSON Parse Error: ${error.message}`);
       } else {
-        setJsonError('Unknown error occurred');
+        setPostErrorMessage('Unknown error occurred');
       }
       setCreateUserBody({});
     }
@@ -53,16 +56,72 @@ const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
     try {
       const parsedData = JSON.parse(updateUserBodyJSON);
       setUpdateUserBody(parsedData);
-      setJsonError(null);
+      setPatchErrorMessage(null);
     } catch (error) {
       if (error instanceof Error) {
-        setJsonError(`JSON Parse Error: ${error.message}`);
+        setPatchErrorMessage(`JSON Parse Error: ${error.message}`);
       } else {
-        setJsonError('Unknown error occurred');
+        setPatchErrorMessage('Unknown error occurred');
       }
       setUpdateUserBody({});
     }
   }, [updateUserBodyJSON]);
+
+  const validUserObject = (): boolean => {
+    if (activeReq === 'post') {
+      const missingProps = [];
+      if (createUserBody?.name === undefined) {
+        missingProps.push(' name');
+      }
+      if (createUserBody?.username === undefined) {
+        missingProps.push(' username');
+      }
+      if (createUserBody?.password === undefined) {
+        missingProps.push(' password');
+      }
+      if (missingProps.length > 0) {
+        setPostErrorMessage(
+          `Missing the following properties:${missingProps}.`,
+        );
+        return false;
+      }
+      if (!userRole) {
+        setPostErrorMessage('Please select a role.');
+        return false;
+      }
+    }
+    if (
+      activeReq === 'patch' &&
+      !userRole &&
+      updateUserBody &&
+      Object.keys(updateUserBody).length === 0
+    ) {
+      setPatchErrorMessage('Please provide properties to update.');
+      return false;
+    }
+    return true;
+  };
+
+  const handleResetJsonBtn = () => {
+    if (activeReq === 'post') {
+      setCreateUserBodyJSON(
+        JSON.stringify(
+          { name: 'string', username: 'string', password: 'string' },
+          null,
+          2,
+        ),
+      );
+    }
+    if (activeReq === 'patch') {
+      setUpdateUserBodyJSON(
+        JSON.stringify(
+          { name: 'string', username: 'string', password: 'string' },
+          null,
+          2,
+        ),
+      );
+    }
+  };
 
   return (
     <div className="requests">
@@ -268,9 +327,10 @@ const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
                     password: 'string',
                   }}
                   userRole={userRole}
-                  handleTextAreaChange={(e) =>
-                    setCreateUserBodyJSON(e.target.value)
-                  }
+                  handleTextAreaChange={(e) => {
+                    setPostErrorMessage('');
+                    setCreateUserBodyJSON(e.target.value);
+                  }}
                   response={{
                     data: [
                       {
@@ -281,16 +341,19 @@ const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
                       },
                     ],
                   }}
-                  req={() =>
+                  req={() => {
+                    const validObject = validUserObject();
+                    if (!validObject) return;
                     API.createUser(
                       token,
                       'amazon',
                       userRole,
                       createUserBody as Partial<CreateUserBodyDTO>,
-                    )
-                  }
+                    );
+                  }}
                   className="req-container"
-                  onRadioBtnChange={(e) =>
+                  onRadioBtnChange={(e) => {
+                    setPostErrorMessage('');
                     setUserRole(
                       !e.target.checked
                         ? ''
@@ -299,9 +362,10 @@ const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
                           : e.target.name === 'admin'
                             ? Role.Admin
                             : Role.User,
-                    )
-                  }
-                  jsonError={jsonError}
+                    );
+                  }}
+                  handleResetJsonBtn={handleResetJsonBtn}
+                  errorMessage={postErrorMessage}
                 />
               ) : activeRoute === 'create-a-walmart' ? (
                 <Route
@@ -315,9 +379,10 @@ const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
                     password: 'string',
                   }}
                   userRole={userRole}
-                  handleTextAreaChange={(e) =>
-                    setCreateUserBodyJSON(e.target.value)
-                  }
+                  handleTextAreaChange={(e) => {
+                    setPostErrorMessage('');
+                    setCreateUserBodyJSON(e.target.value);
+                  }}
                   response={{
                     data: [
                       {
@@ -337,7 +402,8 @@ const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
                     )
                   }
                   className="req-container"
-                  onRadioBtnChange={(e) =>
+                  onRadioBtnChange={(e) => {
+                    setPostErrorMessage('');
                     setUserRole(
                       !e.target.checked
                         ? ''
@@ -346,9 +412,10 @@ const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
                           : e.target.name === 'admin'
                             ? Role.Admin
                             : Role.User,
-                    )
-                  }
-                  jsonError={jsonError}
+                    );
+                  }}
+                  handleResetJsonBtn={handleResetJsonBtn}
+                  errorMessage={postErrorMessage}
                 />
               ) : null}
             </>
@@ -384,9 +451,10 @@ const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
                     password: 'string',
                   }}
                   userRole={userRole}
-                  handleTextAreaChange={(e) =>
-                    setUpdateUserBodyJSON(e.target.value)
-                  }
+                  handleTextAreaChange={(e) => {
+                    setPatchErrorMessage('');
+                    setUpdateUserBodyJSON(e.target.value);
+                  }}
                   response={{
                     data: [
                       {
@@ -397,16 +465,19 @@ const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
                       },
                     ],
                   }}
-                  req={() =>
+                  req={() => {
+                    const validObject = validUserObject();
+                    if (!validObject) return;
                     API.updateUser(
                       token,
                       'amazon',
                       userRole,
                       updateUserBody as Partial<UpdateUserBodyDTO>,
-                    )
-                  }
+                    );
+                  }}
                   className="req-container"
                   onRadioBtnChange={(e) => {
+                    setPatchErrorMessage('');
                     setUserRole(
                       !e.target.checked
                         ? ''
@@ -417,7 +488,8 @@ const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
                             : Role.User,
                     );
                   }}
-                  jsonError={jsonError}
+                  handleResetJsonBtn={handleResetJsonBtn}
+                  errorMessage={patchErrorMessage}
                 />
               ) : activeRoute === 'update-a-walmart' ? (
                 <Route
@@ -431,9 +503,10 @@ const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
                     password: 'string',
                   }}
                   userRole={userRole}
-                  handleTextAreaChange={(e) =>
-                    setUpdateUserBodyJSON(e.target.value)
-                  }
+                  handleTextAreaChange={(e) => {
+                    setPatchErrorMessage('');
+                    setUpdateUserBodyJSON(e.target.value);
+                  }}
                   response={{
                     data: [
                       {
@@ -444,16 +517,19 @@ const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
                       },
                     ],
                   }}
-                  req={() =>
+                  req={() => {
+                    const validObject = validUserObject();
+                    if (!validObject) return;
                     API.updateUser(
                       token,
-                      'walmart',
+                      'amazon',
                       userRole,
                       updateUserBody as Partial<UpdateUserBodyDTO>,
-                    )
-                  }
+                    );
+                  }}
                   className="req-container"
                   onRadioBtnChange={(e) => {
+                    setPatchErrorMessage('');
                     setUserRole(
                       !e.target.checked
                         ? ''
@@ -464,7 +540,8 @@ const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
                             : Role.User,
                     );
                   }}
-                  jsonError={jsonError}
+                  handleResetJsonBtn={handleResetJsonBtn}
+                  errorMessage={patchErrorMessage}
                 />
               ) : null}
             </>
