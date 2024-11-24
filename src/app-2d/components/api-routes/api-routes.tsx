@@ -341,10 +341,10 @@ const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
                       },
                     ],
                   }}
-                  req={() => {
+                  req={async () => {
                     const validObject = validUserObject();
                     if (!validObject) return;
-                    API.createUser(
+                    return await API.createUser(
                       token,
                       'amazon',
                       userRole,
@@ -393,14 +393,16 @@ const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
                       },
                     ],
                   }}
-                  req={() =>
-                    API.createUser(
+                  req={async () => {
+                    const validObject = validUserObject();
+                    if (!validObject) return;
+                    return await API.createUser(
                       token,
                       'walmart',
                       userRole,
                       createUserBody as Partial<CreateUserBodyDTO>,
-                    )
-                  }
+                    );
+                  }}
                   className="req-container"
                   onRadioBtnChange={(e) => {
                     setPostErrorMessage('');
@@ -465,10 +467,10 @@ const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
                       },
                     ],
                   }}
-                  req={() => {
+                  req={async () => {
                     const validObject = validUserObject();
                     if (!validObject) return;
-                    API.updateUser(
+                    return await API.updateUser(
                       token,
                       'amazon',
                       userRole,
@@ -517,10 +519,10 @@ const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
                       },
                     ],
                   }}
-                  req={() => {
+                  req={async () => {
                     const validObject = validUserObject();
                     if (!validObject) return;
-                    API.updateUser(
+                    return await API.updateUser(
                       token,
                       'amazon',
                       userRole,

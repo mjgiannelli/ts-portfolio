@@ -21,7 +21,7 @@ const BackendViewController = () => {
     exp: 0,
   });
   const [tokenStr, setTokenStr] = useState<string | null>(
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MTQzZjJlZjJkMjkzNGFlODFkOWMzNCIsInVzZXJuYW1lIjoiYW1hem9udXNlciIsInJvbGVJZCI6IjY3MTQyMGQ5NDRmYTEyODIyYzU4ODcyMCIsImN1c3RvbWVySWQiOiI2NzE0M2U4OWYyZDI5MzRhZTgxZDljMmUiLCJuYW1lIjoiYW1hem9uIHVzZXIiLCJpYXQiOjE3MzA1ODUxMTl9.jSnAV7Skz8VhocYGEIbVugVn3NWGVBDD025esH4Dm0M',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzE0M2YyZWYyZDI5MzRhZTgxZDljMzQiLCJ1c2VybmFtZSI6ImFtYXpvbnVzZXIiLCJyb2xlSWQiOiI2NzE0MjBkOTQ0ZmExMjgyMmM1ODg3MjAiLCJjdXN0b21lcklkIjoiNjcxNDNlODlmMmQyOTM0YWU4MWQ5YzJlIiwibmFtZSI6ImFtYXpvbiB1c2VyIiwiaWF0IjoxNzMyNDA5NjUyfQ.bn9Zk-fnRSaCZ07AnspUNVsWkEAD_kbab1gSDycjFGQ',
   );
 
   const roles = ['admin', 'user'];
