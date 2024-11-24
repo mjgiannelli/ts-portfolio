@@ -182,34 +182,34 @@ const Route: React.FC<RouteProps> = ({
           >
             Execute
           </button>
+          {apiResp ? (
+            <div className="resp-container">
+              <p id="server-resp">Server Response:</p>
+              <div className="resp">
+                <pre>{JSON.stringify(apiResp, null, 2)}</pre>
+              </div>
+            </div>
+          ) : (
+            <div className="resp-container">
+              <p id="server-resp">
+                {pendingReq ? 'Fetching Request' : 'Response Example:'}
+              </p>
+              <div className="resp">
+                {pendingReq ? (
+                  <>
+                    <div className="loading" id="pending-req-loading">
+                      <FontAwesomeIcon icon={faSpinner} />
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <pre>{JSON.stringify(response, null, 2)}</pre>
+                  </>
+                )}
+              </div>
+            </div>
+          )}
         </>
-      )}
-      {apiResp ? (
-        <div className="resp-container">
-          <p id="server-resp">Server Response:</p>
-          <div className="resp">
-            <pre>{JSON.stringify(apiResp, null, 2)}</pre>
-          </div>
-        </div>
-      ) : (
-        <div className="resp-container">
-          <p id="server-resp">
-            {pendingReq ? 'Fetching Request' : 'Response Example:'}
-          </p>
-          <div className="resp">
-            {pendingReq ? (
-              <>
-                <div className="loading" id="pending-req-loading">
-                  <FontAwesomeIcon icon={faSpinner} />
-                </div>
-              </>
-            ) : (
-              <>
-                <pre>{JSON.stringify(response, null, 2)}</pre>
-              </>
-            )}
-          </div>
-        </div>
       )}
     </div>
   );

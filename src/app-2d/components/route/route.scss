@@ -15,6 +15,13 @@
             margin-bottom: 1rem;
             color: var(--primary-color);
         }
+        .ned-container {
+            display: flex;
+            justify-content: center;
+            img {
+                width: unset;
+            }
+        }
         #execute-btn, #reset-btn {
             color: var(--text-color);
             background-color: var(--primary-color);
@@ -80,6 +87,14 @@
 
 // Small devices (landscape phones, 576 - 767px)
 @media (min-width: 576px) { 
+
+    .req-container {
+        .ned-container {
+            img {
+                height: 40rem;
+            }
+        }
+    }
     
 }
 
@@ -88,6 +103,11 @@
     .req-container {
         h2 {
             font-size: 1.6rem;
+        }
+        .ned-container {
+            img {
+                width: unset;
+            }
         }
         #execute-btn, #reset-btn {
             width: 10rem;
@@ -111,6 +131,10 @@
                 #pending-req-loading {
                     color: var(--server-color);
                     margin-top: 3rem;
+                    svg {
+                        height: 10rem;
+                        width: 10rem;
+                    }
                 }
                 pre {
                     font-size: 1.2rem;
