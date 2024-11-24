@@ -57,7 +57,27 @@
 
 // Small devices (landscape phones, 576 - 767px)
 @media (min-width: 576px) { 
-    
+    .requests {
+        margin-top: 2rem;
+        width: 95%;
+        height: 60rem;
+        .tabs {
+            h1 {
+                font-size: 1.8rem;
+                width: 100%;
+                padding: 0.5rem;
+            }
+        }
+        .routes {
+            height: 56.65rem;
+            .route-headers {
+                h1 {
+                    font-size: 1.6rem;
+                    height: 6rem;
+                }
+            }
+        }
+    }
 }
 
 // Medium devices (tablets, 768px - 991px)

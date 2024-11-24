@@ -11,8 +11,8 @@ export interface ApiRoutesProps {
 
 const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
   const [pendingReq, setPendingReq] = useState<boolean>(false);
-  const [activeReq, setActiveReq] = useState<string>('post');
-  const [activeRoute, setActiveRoute] = useState<string>('create-an-amazon');
+  const [activeReq, setActiveReq] = useState<string>('get');
+  const [activeRoute, setActiveRoute] = useState<string>('get-all');
   const [createUserBody, setCreateUserBody] =
     useState<Partial<CreateUserBodyDTO> | null>(null);
   const [createUserBodyJSON, setCreateUserBodyJSON] = useState<string>(
@@ -217,16 +217,16 @@ const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
                   description="Get all users in database."
                   url="https://portfolio-backend-ahyh.onrender.com/users"
                   reqType="GET"
-                  response={{
-                    data: [
-                      {
-                        name: 'string',
-                        username: 'string',
-                        customerId: 'string',
-                        roleId: 'string',
-                      },
-                    ],
-                  }}
+                  response={[
+                    {
+                      _id: 'string',
+                      name: 'string',
+                      username: 'string',
+                      customerId: 'string',
+                      roleId: 'string',
+                      _v: 0,
+                    },
+                  ]}
                   req={async () => {
                     setPendingReq(true);
                     return await API.getAllUsers(token);
@@ -240,16 +240,16 @@ const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
                   description="Get all Amazon users in database."
                   url="https://portfolio-backend-ahyh.onrender.com/users"
                   reqType="GET"
-                  response={{
-                    data: [
-                      {
-                        name: 'string',
-                        username: 'string',
-                        customerId: 'string',
-                        roleId: 'string',
-                      },
-                    ],
-                  }}
+                  response={[
+                    {
+                      _id: 'string',
+                      name: 'string',
+                      username: 'string',
+                      customerId: 'string',
+                      roleId: 'string',
+                      _v: 0,
+                    },
+                  ]}
                   req={async () => {
                     setPendingReq(true);
                     return await API.getAllUsers(token, 'amazon');
@@ -263,16 +263,16 @@ const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
                   description="Get all Walmart users in database."
                   url="https://portfolio-backend-ahyh.onrender.com/users"
                   reqType="GET"
-                  response={{
-                    data: [
-                      {
-                        name: 'string',
-                        username: 'string',
-                        customerId: 'string',
-                        roleId: 'string',
-                      },
-                    ],
-                  }}
+                  response={[
+                    {
+                      _id: 'string',
+                      name: 'string',
+                      username: 'string',
+                      customerId: 'string',
+                      roleId: 'string',
+                      _v: 0,
+                    },
+                  ]}
                   req={async () => {
                     setPendingReq(true);
                     return await API.getAllUsers(token, 'walmart');
@@ -287,12 +287,12 @@ const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
                   url="https://portfolio-backend-ahyh.onrender.com/users/:id"
                   reqType="GET"
                   response={{
-                    data: {
-                      name: 'string',
-                      username: 'string',
-                      customerId: 'string',
-                      roleId: 'string',
-                    },
+                    _id: 'string',
+                    name: 'string',
+                    username: 'string',
+                    customerId: 'string',
+                    roleId: 'string',
+                    _v: 0,
                   }}
                   req={async () => {
                     setPendingReq(true);
@@ -308,12 +308,12 @@ const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
                   url="https://portfolio-backend-ahyh.onrender.com/users/:id"
                   reqType="GET"
                   response={{
-                    data: {
-                      name: 'string',
-                      username: 'string',
-                      customerId: 'string',
-                      roleId: 'string',
-                    },
+                    _id: 'string',
+                    name: 'string',
+                    username: 'string',
+                    customerId: 'string',
+                    roleId: 'string',
+                    _v: 0,
                   }}
                   req={async () => {
                     setPendingReq(true);
@@ -362,12 +362,16 @@ const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
                     setCreateUserBodyJSON(e.target.value);
                   }}
                   response={{
+                    statusCode: 201,
+                    message: 'string',
                     data: [
                       {
+                        _id: 'string',
                         name: 'string',
                         username: 'string',
                         customerId: 'string',
                         roleId: 'string',
+                        _v: 0,
                       },
                     ],
                   }}
@@ -417,12 +421,16 @@ const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
                     setCreateUserBodyJSON(e.target.value);
                   }}
                   response={{
+                    statusCode: 201,
+                    message: 'string',
                     data: [
                       {
+                        _id: 'string',
                         name: 'string',
                         username: 'string',
                         customerId: 'string',
                         roleId: 'string',
+                        _v: 0,
                       },
                     ],
                   }}
@@ -494,12 +502,16 @@ const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
                     setUpdateUserBodyJSON(e.target.value);
                   }}
                   response={{
+                    statusCode: 200,
+                    message: 'string',
                     data: [
                       {
+                        _id: 'string',
                         name: 'string',
                         username: 'string',
                         customerId: 'string',
                         roleId: 'string',
+                        _v: 0,
                       },
                     ],
                   }}
@@ -549,12 +561,16 @@ const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
                     setUpdateUserBodyJSON(e.target.value);
                   }}
                   response={{
+                    statusCode: 200,
+                    message: 'string',
                     data: [
                       {
+                        _id: 'string',
                         name: 'string',
                         username: 'string',
                         customerId: 'string',
                         roleId: 'string',
+                        _v: 0,
                       },
                     ],
                   }}
@@ -616,9 +632,8 @@ const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
                   url="https://portfolio-backend-ahyh.onrender.com/users"
                   reqType="DELETE"
                   response={{
-                    data: {
-                      statusCode: 201,
-                    },
+                    statusCode: 200,
+                    message: 'string',
                   }}
                   req={async () => {
                     setPendingReq(true);
@@ -645,9 +660,8 @@ const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
                   url="https://portfolio-backend-ahyh.onrender.com/users"
                   reqType="DELETE"
                   response={{
-                    data: {
-                      statusCode: 201,
-                    },
+                    statusCode: 200,
+                    message: 'string',
                   }}
                   req={async () => {
                     setPendingReq(true);

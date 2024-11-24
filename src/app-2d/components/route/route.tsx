@@ -205,7 +205,7 @@ const Route: React.FC<RouteProps> = ({
               </>
             ) : (
               <>
-                <pre>{JSON.stringify(response.data, null, 2)}</pre>
+                <pre>{JSON.stringify(response, null, 2)}</pre>
               </>
             )}
           </div>

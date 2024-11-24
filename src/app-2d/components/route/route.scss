@@ -59,10 +59,11 @@
                 width: 80%;
                 margin: auto;
                 margin-bottom: 1rem;
+                height: 16rem;
                 overflow-y: scroll;
                 #pending-req-loading {
                     color: var(--server-color);
-                    margin-top: 0;
+                    margin-top: 3rem;
                 }
                 #server-resp {
                     margin-top: 0;
@@ -84,7 +85,39 @@
 
 // Medium devices (tablets, 768px - 991px)
 @media (min-width: 768px) { 
-    
+    .req-container {
+        h2 {
+            font-size: 1.6rem;
+        }
+        #execute-btn, #reset-btn {
+            width: 10rem;
+            font-size: 1.6rem;
+        }
+        textarea {
+            font-size: 1.2rem;
+        }
+        .roles {
+            label {
+                font-size: 1.8rem;
+            }
+            .user-role-input {
+                label {
+                    font-size: 1.4rem;
+                }
+            }
+        }
+        .resp-container {
+            .resp {
+                #pending-req-loading {
+                    color: var(--server-color);
+                    margin-top: 3rem;
+                }
+                pre {
+                    font-size: 1.2rem;
+                }
+            } 
+        }
+    }
 }
 
 // Large devices (desktops, 992px and below)
