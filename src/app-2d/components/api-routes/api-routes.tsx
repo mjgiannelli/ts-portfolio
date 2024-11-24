@@ -10,8 +10,9 @@ export interface ApiRoutesProps {
 }
 
 const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
-  const [activeReq, setActiveReq] = useState<string>('get');
-  const [activeRoute, setActiveRoute] = useState<string>('get-all');
+  const [pendingReq, setPendingReq] = useState<boolean>(false);
+  const [activeReq, setActiveReq] = useState<string>('post');
+  const [activeRoute, setActiveRoute] = useState<string>('create-an-amazon');
   const [createUserBody, setCreateUserBody] =
     useState<Partial<CreateUserBodyDTO> | null>(null);
   const [createUserBodyJSON, setCreateUserBodyJSON] = useState<string>(
@@ -132,6 +133,7 @@ const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
             setActiveReq('get');
             setActiveRoute('get-all');
           }}
+          style={{ borderTopLeftRadius: '2rem' }}
         >
           GET
         </h1>
@@ -159,6 +161,7 @@ const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
             setActiveReq('delete');
             setActiveRoute('delete-an-amazon');
           }}
+          style={{ borderTopRightRadius: '2rem' }}
         >
           DELETE
         </h1>
@@ -209,6 +212,8 @@ const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
               </div>
               {activeRoute === 'get-all' ? (
                 <Route
+                  setPendingReq={setPendingReq}
+                  pendingReq={pendingReq}
                   description="Get all users in database."
                   url="https://portfolio-backend-ahyh.onrender.com/users"
                   reqType="GET"
@@ -222,11 +227,16 @@ const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
                       },
                     ],
                   }}
-                  req={() => API.getAllUsers(token)}
+                  req={async () => {
+                    setPendingReq(true);
+                    return await API.getAllUsers(token);
+                  }}
                   className="req-container"
                 />
               ) : activeRoute === 'get-all-amazon' ? (
                 <Route
+                  setPendingReq={setPendingReq}
+                  pendingReq={pendingReq}
                   description="Get all Amazon users in database."
                   url="https://portfolio-backend-ahyh.onrender.com/users"
                   reqType="GET"
@@ -240,11 +250,16 @@ const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
                       },
                     ],
                   }}
-                  req={() => API.getAllUsers(token, 'amazon')}
+                  req={async () => {
+                    setPendingReq(true);
+                    return await API.getAllUsers(token, 'amazon');
+                  }}
                   className="req-container"
                 />
               ) : activeRoute === 'get-all-walmart' ? (
                 <Route
+                  setPendingReq={setPendingReq}
+                  pendingReq={pendingReq}
                   description="Get all Walmart users in database."
                   url="https://portfolio-backend-ahyh.onrender.com/users"
                   reqType="GET"
@@ -258,11 +273,16 @@ const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
                       },
                     ],
                   }}
-                  req={() => API.getAllUsers(token, 'walmart')}
+                  req={async () => {
+                    setPendingReq(true);
+                    return await API.getAllUsers(token, 'walmart');
+                  }}
                   className="req-container"
                 />
               ) : activeRoute === 'get-an-amazon' ? (
                 <Route
+                  setPendingReq={setPendingReq}
+                  pendingReq={pendingReq}
                   description="Get an Amazon user from the database."
                   url="https://portfolio-backend-ahyh.onrender.com/users/:id"
                   reqType="GET"
@@ -274,11 +294,16 @@ const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
                       roleId: 'string',
                     },
                   }}
-                  req={() => API.getUserById(token, 'amazon')}
+                  req={async () => {
+                    setPendingReq(true);
+                    return await API.getUserById(token, 'amazon');
+                  }}
                   className="req-container"
                 />
               ) : activeRoute === 'get-a-walmart' ? (
                 <Route
+                  setPendingReq={setPendingReq}
+                  pendingReq={pendingReq}
                   description="Get an Walmart user from the database."
                   url="https://portfolio-backend-ahyh.onrender.com/users/:id"
                   reqType="GET"
@@ -290,7 +315,10 @@ const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
                       roleId: 'string',
                     },
                   }}
-                  req={() => API.getUserById(token, 'walmart')}
+                  req={async () => {
+                    setPendingReq(true);
+                    return await API.getUserById(token, 'walmart');
+                  }}
                   className="req-container"
                 />
               ) : null}
@@ -317,6 +345,8 @@ const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
               </div>
               {activeRoute === 'create-an-amazon' ? (
                 <Route
+                  setPendingReq={setPendingReq}
+                  pendingReq={pendingReq}
                   description="Create an amazon user."
                   url="https://portfolio-backend-ahyh.onrender.com/users"
                   reqType="POST"
@@ -344,6 +374,7 @@ const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
                   req={async () => {
                     const validObject = validUserObject();
                     if (!validObject) return;
+                    setPendingReq(true);
                     return await API.createUser(
                       token,
                       'amazon',
@@ -369,6 +400,8 @@ const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
                 />
               ) : activeRoute === 'create-a-walmart' ? (
                 <Route
+                  setPendingReq={setPendingReq}
+                  pendingReq={pendingReq}
                   description="Create an walmart user."
                   url="https://portfolio-backend-ahyh.onrender.com/users"
                   reqType="POST"
@@ -396,6 +429,7 @@ const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
                   req={async () => {
                     const validObject = validUserObject();
                     if (!validObject) return;
+                    setPendingReq(true);
                     return await API.createUser(
                       token,
                       'walmart',
@@ -443,6 +477,8 @@ const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
               </div>
               {activeRoute === 'update-an-amazon' ? (
                 <Route
+                  setPendingReq={setPendingReq}
+                  pendingReq={pendingReq}
                   description="Update an amazon user."
                   url="https://portfolio-backend-ahyh.onrender.com/users"
                   reqType="PATCH"
@@ -470,6 +506,7 @@ const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
                   req={async () => {
                     const validObject = validUserObject();
                     if (!validObject) return;
+                    setPendingReq(true);
                     return await API.updateUser(
                       token,
                       'amazon',
@@ -495,6 +532,8 @@ const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
                 />
               ) : activeRoute === 'update-a-walmart' ? (
                 <Route
+                  setPendingReq={setPendingReq}
+                  pendingReq={pendingReq}
                   description="Update an walmart user."
                   url="https://portfolio-backend-ahyh.onrender.com/users"
                   reqType="PATCH"
@@ -522,6 +561,7 @@ const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
                   req={async () => {
                     const validObject = validUserObject();
                     if (!validObject) return;
+                    setPendingReq(true);
                     return await API.updateUser(
                       token,
                       'amazon',
@@ -569,6 +609,8 @@ const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
               </div>
               {activeRoute === 'delete-an-amazon' ? (
                 <Route
+                  setPendingReq={setPendingReq}
+                  pendingReq={pendingReq}
                   route={activeRoute}
                   description="Delete an amazon user."
                   url="https://portfolio-backend-ahyh.onrender.com/users"
@@ -578,7 +620,10 @@ const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
                       statusCode: 201,
                     },
                   }}
-                  req={() => API.deleteUser(token, userId)}
+                  req={async () => {
+                    setPendingReq(true);
+                    return await API.deleteUser(token, userId);
+                  }}
                   className="req-container"
                   userId={userId}
                   onUserIdChange={(e) =>
@@ -593,6 +638,8 @@ const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
                 />
               ) : activeRoute === 'delete-a-walmart' ? (
                 <Route
+                  setPendingReq={setPendingReq}
+                  pendingReq={pendingReq}
                   route={activeRoute}
                   description="Delete a walmart user."
                   url="https://portfolio-backend-ahyh.onrender.com/users"
@@ -602,7 +649,10 @@ const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
                       statusCode: 201,
                     },
                   }}
-                  req={() => API.deleteUser(token, userId)}
+                  req={async () => {
+                    setPendingReq(true);
+                    return await API.deleteUser(token, userId);
+                  }}
                   className="req-container"
                   userId={userId}
                   onUserIdChange={(e) => {

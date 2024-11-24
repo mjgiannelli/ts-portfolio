@@ -2,8 +2,77 @@
 // Small devices (landscape phones, 0 - 575px)
 @media (min-width: 0px) { 
     .req-container {
-        p {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        h2 {
+            font-size: 1.2rem;
+            padding: 1rem;
+            text-align: center;
+        }
+        #route-desc {
+            margin-top: 0.5rem;
+            margin-bottom: 1rem;
             color: var(--primary-color);
+        }
+        #execute-btn, #reset-btn {
+            color: var(--text-color);
+            background-color: var(--primary-color);
+            border: var(--border-secondary);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow-secondary);
+            padding: var(--btn-padding);
+            width: 8rem;
+            font-size: 1.2rem;
+            align-self: center;
+            margin-bottom: 1rem;
+        }
+        #reset-btn {
+            margin-bottom: 2rem;
+        }
+        textarea {
+            width: 80%;
+            margin: auto;
+            padding: 1rem;
+        }
+        .roles {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 80%;
+            margin: auto;
+            margin-top: 0.5rem;
+            margin-bottom: 1rem;
+            .user-role-input {
+                display: flex;
+                label {
+                    margin-right: 0.5rem;
+                }
+            }
+        }
+        .resp-container {
+            #server-resp {
+                color: var(--primary-color);
+            }
+            .resp {
+                background-color: var(--primary-color);
+                width: 80%;
+                margin: auto;
+                margin-bottom: 1rem;
+                overflow-y: scroll;
+                #pending-req-loading {
+                    color: var(--server-color);
+                    margin-top: 0;
+                }
+                #server-resp {
+                    margin-top: 0;
+                }
+                pre {
+                    padding: 1rem;
+                    color: var(--server-color);
+                    font-weight: bold;
+                }
+            } 
         }
     }
 }

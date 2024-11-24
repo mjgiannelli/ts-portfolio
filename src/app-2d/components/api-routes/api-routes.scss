@@ -2,13 +2,21 @@
 // Small devices (landscape phones, 0 - 575px)
 @media (min-width: 0px) { 
     .requests {
+        margin-top: 2rem;
+        width: 95%;
+        border: var(--border-primary);
+        border-radius: var(--border-radius);
+        box-shadow: var(--box-shadow-primary);
+        height: 49rem;
         .tabs {
             display: flex;
             justify-content: space-around;
+            border-radius: var(--border-radius);
             h1 {
                 font-size: 1.6rem;
                 width: 100%;
                 text-align: center;
+                padding: 0.5rem;
                 cursor: pointer;
             }
             .active-req {
@@ -19,15 +27,24 @@
         .routes {
             background-color: var(--text-color);
             color: var(--primary-color);
+            border-bottom-left-radius: 2rem;
+            border-bottom-right-radius: 2rem;
+            height: 46rem;
             .route-headers {
                 display: flex;
                 justify-content: space-around;
+                align-items: center;
                 background-color: var(--primary-color);
                 color: var(--text-color);
                 h1 {
+                    align-self: center;
                     text-align: center;
+                    align-content: center;
                     width: 100%;
                     cursor: pointer;
+                    font-size: 1.2rem;
+                    height: 5.3rem;
+                    padding: 0.25rem;
                 }
                 .active-route {
                     background-color: var(--text-color);

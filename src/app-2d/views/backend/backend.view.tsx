@@ -27,10 +27,10 @@ const Backend: React.FC = () => {
           <FontAwesomeIcon icon={faSpinner} />
         </div>
       ) : tokenClaims ? (
-        <div>
+        <div className="all-requests">
           <button onClick={handleChangeUserBtn}>Change User</button>
-          <p>Name: {tokenClaims.name}</p>
-          <p>Username: {tokenClaims.username}</p>
+          <p className="name">Name: {tokenClaims.name}</p>
+          <p className="username">Username: {tokenClaims.username}</p>
           <ApiRoutes token={tokenStr as string} />
         </div>
       ) : apiAwake ? (
