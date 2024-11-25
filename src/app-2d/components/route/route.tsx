@@ -134,7 +134,7 @@ const Route: React.FC<RouteProps> = ({
             </>
           ) : (reqType === 'PATCH' || reqType === 'DELETE') &&
             route === 'delete-an-amazon' ? (
-            <div className="roles">
+            <div className="customer">
               <div className="user-role-input">
                 <label>Amazon Admin</label>
                 <input
@@ -156,7 +156,7 @@ const Route: React.FC<RouteProps> = ({
             </div>
           ) : (reqType === 'PATCH' || reqType === 'DELETE') &&
             route === 'delete-a-walmart' ? (
-            <div className="roles">
+            <div className="customer">
               <div className="user-role-input">
                 <label>Walmart Admin</label>
                 <input

@@ -42,7 +42,7 @@
             margin: auto;
             padding: 1rem;
         }
-        .roles {
+        .roles, .customer {
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -55,6 +55,12 @@
                 label {
                     margin-right: 0.5rem;
                 }
+            }
+        }
+        .customer {
+            justify-content: center;
+            .user-role-input {
+                margin-right: 1rem;
             }
         }
         .error-message {
@@ -119,7 +125,7 @@
         textarea {
             font-size: 1.2rem;
         }
-        .roles {
+        .roles, .customer {
             label {
                 font-size: 1.8rem;
             }
