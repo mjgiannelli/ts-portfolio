@@ -57,6 +57,9 @@
                 }
             }
         }
+        .error-message {
+            color: red
+        }
         .resp-container {
             #server-resp {
                 color: var(--primary-color);

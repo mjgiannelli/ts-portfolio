@@ -364,16 +364,14 @@ const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
                   response={{
                     statusCode: 201,
                     message: 'string',
-                    data: [
-                      {
-                        _id: 'string',
-                        name: 'string',
-                        username: 'string',
-                        customerId: 'string',
-                        roleId: 'string',
-                        _v: 0,
-                      },
-                    ],
+                    data: {
+                      _id: 'string',
+                      name: 'string',
+                      username: 'string',
+                      customerId: 'string',
+                      roleId: 'string',
+                      _v: 0,
+                    },
                   }}
                   req={async () => {
                     const validObject = validUserObject();
@@ -423,16 +421,14 @@ const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
                   response={{
                     statusCode: 201,
                     message: 'string',
-                    data: [
-                      {
-                        _id: 'string',
-                        name: 'string',
-                        username: 'string',
-                        customerId: 'string',
-                        roleId: 'string',
-                        _v: 0,
-                      },
-                    ],
+                    data: {
+                      _id: 'string',
+                      name: 'string',
+                      username: 'string',
+                      customerId: 'string',
+                      roleId: 'string',
+                      _v: 0,
+                    },
                   }}
                   req={async () => {
                     const validObject = validUserObject();
@@ -504,16 +500,14 @@ const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
                   response={{
                     statusCode: 200,
                     message: 'string',
-                    data: [
-                      {
-                        _id: 'string',
-                        name: 'string',
-                        username: 'string',
-                        customerId: 'string',
-                        roleId: 'string',
-                        _v: 0,
-                      },
-                    ],
+                    data: {
+                      _id: 'string',
+                      name: 'string',
+                      username: 'string',
+                      customerId: 'string',
+                      roleId: 'string',
+                      _v: 0,
+                    },
                   }}
                   req={async () => {
                     const validObject = validUserObject();
@@ -563,16 +557,14 @@ const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
                   response={{
                     statusCode: 200,
                     message: 'string',
-                    data: [
-                      {
-                        _id: 'string',
-                        name: 'string',
-                        username: 'string',
-                        customerId: 'string',
-                        roleId: 'string',
-                        _v: 0,
-                      },
-                    ],
+                    data: {
+                      _id: 'string',
+                      name: 'string',
+                      username: 'string',
+                      customerId: 'string',
+                      roleId: 'string',
+                      _v: 0,
+                    },
                   }}
                   req={async () => {
                     const validObject = validUserObject();

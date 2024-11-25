@@ -7,7 +7,7 @@
         border: var(--border-primary);
         border-radius: var(--border-radius);
         box-shadow: var(--box-shadow-primary);
-        height: 49rem;
+        height: 60rem;
         .tabs {
             display: flex;
             justify-content: space-around;
@@ -29,7 +29,7 @@
             color: var(--primary-color);
             border-bottom-left-radius: 2rem;
             border-bottom-right-radius: 2rem;
-            height: 46rem;
+            height: 57rem;
             .route-headers {
                 display: flex;
                 justify-content: space-around;
@@ -82,7 +82,12 @@
 
 // Medium devices (tablets, 768px - 991px)
 @media (min-width: 768px) { 
-    
+    .requests {
+        height: 63.3rem;
+        .routes {
+            height: 60rem;
+        }
+    }
 }
 
 // Large devices (desktops, 992px and below)
@@ -92,7 +97,12 @@
 
 // Extra large devices (large desktops, 1200px and below)
 @media (min-width: 1200px) { 
-
+    .requests {
+        height: 65rem;
+        .routes {
+            height: 61.7rem;
+        }
+    }
 }
 
 // Extra large devices (large desktops, 1600px and below)

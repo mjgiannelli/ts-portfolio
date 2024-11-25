@@ -128,7 +128,9 @@ const Route: React.FC<RouteProps> = ({
                 </div>
               </div>
 
-              {errorMessage ? <p>{errorMessage}</p> : null}
+              {errorMessage ? (
+                <p className="error-message">{errorMessage}</p>
+              ) : null}
             </>
           ) : (reqType === 'PATCH' || reqType === 'DELETE') &&
             route === 'delete-an-amazon' ? (

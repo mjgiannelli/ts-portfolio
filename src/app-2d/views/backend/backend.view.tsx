@@ -22,8 +22,8 @@ const Backend: React.FC = () => {
   return (
     <div className="backend-container">
       {loading ? (
-        <div className="loading">
-          {message ? <p>{message}</p> : null}
+        <div id="wake-up-loading" className="loading">
+          {message ? <p id="wake-up-message">{message}</p> : null}
           <FontAwesomeIcon icon={faSpinner} />
         </div>
       ) : tokenClaims ? (
@@ -34,10 +34,10 @@ const Backend: React.FC = () => {
           <ApiRoutes token={tokenStr as string} />
         </div>
       ) : apiAwake ? (
-        <div>
+        <>
           <div className="dropdowns">
             <div className="customer-dd">
-              <label htmlFor="customer">Customer</label>
+              <label htmlFor="customer">Customer: </label>
               <select name="customer" onChange={handleDropDownSelection}>
                 <option value="">---</option>
                 {customers.map((customer: string, index: number) => {
@@ -50,7 +50,7 @@ const Backend: React.FC = () => {
               </select>
             </div>
             <div className="role-dd">
-              <label htmlFor="role">Role</label>
+              <label htmlFor="role">Role: </label>
               <select name="role" onChange={handleDropDownSelection}>
                 <option value="">---</option>
                 {roles.map((role: string, index: number) => {
@@ -63,11 +63,17 @@ const Backend: React.FC = () => {
               </select>
             </div>
           </div>
-          <button onClick={handleGetAccessToken}>Get Access Token</button>
-        </div>
+          <div className="token-btn-container">
+            <button id="get-token-btn" onClick={handleGetAccessToken}>
+              Get Access Token
+            </button>
+          </div>
+        </>
       ) : (
-        <div>
-          <button onClick={handleAwakeApiClick}>Wake up API</button>
+        <div className="wake-up-container">
+          <button id="wake-up-btn" onClick={handleAwakeApiClick}>
+            Wake up API
+          </button>
         </div>
       )}
     </div>

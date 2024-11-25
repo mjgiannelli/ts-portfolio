@@ -11,18 +11,8 @@ const BackendViewController = () => {
     customer: 'amazon',
   });
   const [message, setMessage] = useState<string>('');
-  const [tokenClaims, setTokenClaims] = useState<DecodedTokenDTO | null>({
-    id: '67143f2ef2d2934ae81d9c34',
-    username: 'amazonuser',
-    roleId: '671420d944fa12822c588720',
-    customerId: '67143e89f2d2934ae81d9c2e',
-    name: 'amazon user',
-    iat: 1730585374,
-    exp: 0,
-  });
-  const [tokenStr, setTokenStr] = useState<string | null>(
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzE0M2YyZWYyZDI5MzRhZTgxZDljMzQiLCJ1c2VybmFtZSI6ImFtYXpvbnVzZXIiLCJyb2xlSWQiOiI2NzE0MjBkOTQ0ZmExMjgyMmM1ODg3MjAiLCJjdXN0b21lcklkIjoiNjcxNDNlODlmMmQyOTM0YWU4MWQ5YzJlIiwibmFtZSI6ImFtYXpvbiB1c2VyIiwiaWF0IjoxNzMyNDA5NjUyfQ.bn9Zk-fnRSaCZ07AnspUNVsWkEAD_kbab1gSDycjFGQ',
-  );
+  const [tokenClaims, setTokenClaims] = useState<DecodedTokenDTO | null>(null);
+  const [tokenStr, setTokenStr] = useState<string | null>(null);
 
   const roles = ['admin', 'user'];
   const customers = ['amazon', 'walmart'];

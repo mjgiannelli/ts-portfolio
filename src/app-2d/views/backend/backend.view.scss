@@ -5,6 +5,22 @@
         flex-direction: column;
         width: 80%;
         margin: auto;
+        .wake-up-container {
+            text-align: center;
+        }
+        #wake-up-loading {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            align-content: center;
+            margin-top: 2rem;
+            #wake-up-message {
+                color: red;
+                margin-bottom: 2rem;
+                font-size: 2rem;
+            }
+        }
         .all-requests {
             display: flex;
             flex-direction: column;
@@ -23,12 +39,44 @@
                 font-size: 2rem;
             }
         }
+        .dropdowns {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: center;
+            .customer-dd, .role-dd {
+                margin-bottom: 1rem;
+                label {
+                    font-size: 1.6rem;
+                }
+                select {
+                    font-size: 1.6rem;
+                }
+            }
+        }
+        .token-btn-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            align-content: center;
+            margin-top: 1rem;
+            #get-token-btn {
+                width: 10rem;
+            }
+        }
     }
 }
 
 // Small devices (landscape phones, 576 - 767px)
 @media (min-width: 576px) { 
-    
+    .backend-container {
+        .wake-up-container {
+            #wake-up-btn {
+                font-size: 1.6rem;
+                padding: 1rem;
+            }
+        }
+    }
 }
 
 // Medium devices (tablets, 768px - 991px)
@@ -36,6 +84,11 @@
     .backend-container {
         width: 80%;
         margin: auto;
+        #wake-up-loading {
+            #wake-up-message {
+                font-size: 2.6rem;
+            }
+        }
         .all-requests {
             width: 95%;
             margin: auto;
@@ -51,12 +104,34 @@
                 font-size: 2.5rem;
             }
         }
+        .dropdowns {
+            .customer-dd, .role-dd {
+                label {
+                    font-size: 2rem;
+                }
+                select {
+                    font-size: 2rem;
+                }
+            }
+        }
+        .token-btn-container {
+            #get-token-btn {
+                width: 12rem;
+                font-size: 1.6rem;
+            }
+        }
     }
 }
 
 // Large devices (desktops, 992px and below)
 @media (min-width: 992px) { 
-    
+    .backend-container {
+        .wake-up-container {
+            #wake-up-btn {
+                font-size: 2rem;
+            }
+        }
+    }
 }
 
 // Extra large devices (large desktops, 1200px and below)
