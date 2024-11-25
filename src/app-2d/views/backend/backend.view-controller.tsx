@@ -4,7 +4,7 @@ import { DecodedTokenDTO } from '../../../utilties/dtos/auth.dtos';
 import auth from '../../../utilties/auth';
 
 const BackendViewController = () => {
-  const [apiAwake, setApiAwake] = useState<boolean>(true);
+  const [apiAwake, setApiAwake] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [dropDownSelection, setDropDownSelection] = useState({
     role: 'user',
