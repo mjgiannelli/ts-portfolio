@@ -1,0 +1,28 @@
+/* variable declarations */
+:root[theme='Dark'] {
+    --primary-color: #000000;
+    --secondary-color: red;
+    --text-color: #fff;
+    --text-style: Open sans-serif;
+    --border-primary: var(--primary-color) 0.1rem solid;
+    --border-secondary: var(--text-color) 0.1rem solid;
+    --border-radius: 2rem;
+    --box-shadow-primary: 0.5rem 0.5rem 0.75rem var(--text-color);
+    --box-shadow-secondary: 0.5rem 0.5rem 0.75rem var(--primary-color);
+    --btn-padding: 0.5rem;
+    --server-color: limegreen;
+  }
+  
+  html[theme='Light'] {
+    --primary-color: #fff;
+    --secondary-color: red;
+    --text-color: #000000;
+    --text-style: Open sans-serif;
+    --border-primary: var(--primary-color) 0.1rem solid;
+    --border-secondary: var(--text-color) 0.1rem solid;
+    --border-radius: 2rem;
+    --box-shadow-primary: 0.5rem 0.5rem 0.75rem var(--text-color);
+    --box-shadow-secondary: 0.5rem 0.5rem 0.75rem var(--primary-color);
+    --btn-padding: 0.5rem;
+    --server-color: darkgreen;
+  }

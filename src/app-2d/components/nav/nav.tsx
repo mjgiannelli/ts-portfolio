@@ -48,7 +48,13 @@ const Nav: React.FC<NavProps> = ({
         <nav className="col-7">
           <div className="box">
             <ul id="nav-links" className="row">
-              {['About', 'Portfolio', 'Contact', 'Resume'].map((link) => (
+              {[
+                'About',
+                'Portfolio',
+                'Backend Example',
+                'Contact',
+                'Resume',
+              ].map((link) => (
                 <li key={link} className="col-2">
                   <a
                     className={selectedNavLink === link ? 'navActive' : ''}

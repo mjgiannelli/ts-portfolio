@@ -1,0 +1,683 @@
+import { useEffect, useState } from 'react';
+import { API } from '../../api/api';
+import Route from '../route/route';
+import './api-routes.scss';
+import { CreateUserBodyDTO, UpdateUserBodyDTO } from '../../api/dtos/api.dto';
+import { Role, UserId } from '../../../utilties/enum/enum';
+
+export interface ApiRoutesProps {
+  token: string;
+}
+
+const ApiRoutes: React.FC<ApiRoutesProps> = ({ token }) => {
+  const [pendingReq, setPendingReq] = useState<boolean>(false);
+  const [activeReq, setActiveReq] = useState<string>('get');
+  const [activeRoute, setActiveRoute] = useState<string>('get-all');
+  const [createUserBody, setCreateUserBody] =
+    useState<Partial<CreateUserBodyDTO> | null>(null);
+  const [createUserBodyJSON, setCreateUserBodyJSON] = useState<string>(
+    JSON.stringify(
+      { name: 'string', username: 'string', password: 'string' },
+      null,
+      2,
+    ),
+  );
+  const [updateUserBody, setUpdateUserBody] =
+    useState<Partial<UpdateUserBodyDTO | null>>(null);
+  const [updateUserBodyJSON, setUpdateUserBodyJSON] = useState<string>(
+    JSON.stringify(
+      { name: 'string', username: 'string', password: 'string' },
+      null,
+      2,
+    ),
+  );
+  const [postErrorMessage, setPostErrorMessage] = useState<string | null>(null);
+  const [patchErrorMessage, setPatchErrorMessage] = useState<string | null>(
+    null,
+  );
+  const [userRole, setUserRole] = useState<string>('');
+  const [userId, setUserId] = useState<string>('');
+
+  useEffect(() => {
+    try {
+      const parsedData = JSON.parse(createUserBodyJSON);
+      setCreateUserBody(parsedData);
+      setPostErrorMessage(null);
+    } catch (error) {
+      if (error instanceof Error) {
+        setPostErrorMessage(`JSON Parse Error: ${error.message}`);
+      } else {
+        setPostErrorMessage('Unknown error occurred');
+      }
+      setCreateUserBody({});
+    }
+  }, [createUserBodyJSON]);
+
+  useEffect(() => {
+    try {
+      const parsedData = JSON.parse(updateUserBodyJSON);
+      setUpdateUserBody(parsedData);
+      setPatchErrorMessage(null);
+    } catch (error) {
+      if (error instanceof Error) {
+        setPatchErrorMessage(`JSON Parse Error: ${error.message}`);
+      } else {
+        setPatchErrorMessage('Unknown error occurred');
+      }
+      setUpdateUserBody({});
+    }
+  }, [updateUserBodyJSON]);
+
+  const validUserObject = (): boolean => {
+    if (activeReq === 'post') {
+      const missingProps = [];
+      if (createUserBody?.name === undefined) {
+        missingProps.push(' name');
+      }
+      if (createUserBody?.username === undefined) {
+        missingProps.push(' username');
+      }
+      if (createUserBody?.password === undefined) {
+        missingProps.push(' password');
+      }
+      if (missingProps.length > 0) {
+        setPostErrorMessage(
+          `Missing the following properties:${missingProps}.`,
+        );
+        return false;
+      }
+      if (!userRole) {
+        setPostErrorMessage('Please select a role.');
+        return false;
+      }
+    }
+    if (
+      activeReq === 'patch' &&
+      !userRole &&
+      updateUserBody &&
+      Object.keys(updateUserBody).length === 0
+    ) {
+      setPatchErrorMessage('Please provide properties to update.');
+      return false;
+    }
+    return true;
+  };
+
+  const handleResetJsonBtn = () => {
+    if (activeReq === 'post') {
+      setCreateUserBodyJSON(
+        JSON.stringify(
+          { name: 'string', username: 'string', password: 'string' },
+          null,
+          2,
+        ),
+      );
+    }
+    if (activeReq === 'patch') {
+      setUpdateUserBodyJSON(
+        JSON.stringify(
+          { name: 'string', username: 'string', password: 'string' },
+          null,
+          2,
+        ),
+      );
+    }
+  };
+
+  return (
+    <div className="requests">
+      <div className="tabs">
+        <h1
+          className={activeReq === 'get' ? 'active-req' : ''}
+          onClick={() => {
+            setActiveReq('get');
+            setActiveRoute('get-all');
+          }}
+          style={{ borderTopLeftRadius: '2rem' }}
+        >
+          GET
+        </h1>
+        <h1
+          className={activeReq === 'post' ? 'active-req' : ''}
+          onClick={() => {
+            setActiveReq('post');
+            setActiveRoute('create-an-amazon');
+          }}
+        >
+          POST
+        </h1>
+        <h1
+          className={activeReq === 'patch' ? 'active-req' : ''}
+          onClick={() => {
+            setActiveReq('patch');
+            setActiveRoute('update-an-amazon');
+          }}
+        >
+          PATCH
+        </h1>
+        <h1
+          className={activeReq === 'delete' ? 'active-req' : ''}
+          onClick={() => {
+            setActiveReq('delete');
+            setActiveRoute('delete-an-amazon');
+          }}
+          style={{ borderTopRightRadius: '2rem' }}
+        >
+          DELETE
+        </h1>
+      </div>
+      <div className="routes">
+        <>
+          {activeReq === 'get' ? (
+            <>
+              <div className="route-headers">
+                <h1
+                  className={activeRoute === 'get-all' ? 'active-route' : ''}
+                  onClick={() => setActiveRoute('get-all')}
+                >
+                  Get All Users
+                </h1>
+                <h1
+                  className={
+                    activeRoute === 'get-all-amazon' ? 'active-route' : ''
+                  }
+                  onClick={() => setActiveRoute('get-all-amazon')}
+                >
+                  Get All Amazon Users
+                </h1>
+                <h1
+                  className={
+                    activeRoute === 'get-all-walmart' ? 'active-route' : ''
+                  }
+                  onClick={() => setActiveRoute('get-all-walmart')}
+                >
+                  Get All Walmart Users
+                </h1>
+                <h1
+                  className={
+                    activeRoute === 'get-an-amazon' ? 'active-route' : ''
+                  }
+                  onClick={() => setActiveRoute('get-an-amazon')}
+                >
+                  Get One Amazon User
+                </h1>
+                <h1
+                  className={
+                    activeRoute === 'get-a-walmart' ? 'active-route' : ''
+                  }
+                  onClick={() => setActiveRoute('get-a-walmart')}
+                >
+                  Get One Walmart User
+                </h1>
+              </div>
+              {activeRoute === 'get-all' ? (
+                <Route
+                  setPendingReq={setPendingReq}
+                  pendingReq={pendingReq}
+                  description="Get all users in database."
+                  url="https://portfolio-backend-ahyh.onrender.com/users"
+                  reqType="GET"
+                  response={[
+                    {
+                      _id: 'string',
+                      name: 'string',
+                      username: 'string',
+                      customerId: 'string',
+                      roleId: 'string',
+                      _v: 0,
+                    },
+                  ]}
+                  req={async () => {
+                    setPendingReq(true);
+                    return await API.getAllUsers(token);
+                  }}
+                  className="req-container"
+                />
+              ) : activeRoute === 'get-all-amazon' ? (
+                <Route
+                  setPendingReq={setPendingReq}
+                  pendingReq={pendingReq}
+                  description="Get all Amazon users in database."
+                  url="https://portfolio-backend-ahyh.onrender.com/users"
+                  reqType="GET"
+                  response={[
+                    {
+                      _id: 'string',
+                      name: 'string',
+                      username: 'string',
+                      customerId: 'string',
+                      roleId: 'string',
+                      _v: 0,
+                    },
+                  ]}
+                  req={async () => {
+                    setPendingReq(true);
+                    return await API.getAllUsers(token, 'amazon');
+                  }}
+                  className="req-container"
+                />
+              ) : activeRoute === 'get-all-walmart' ? (
+                <Route
+                  setPendingReq={setPendingReq}
+                  pendingReq={pendingReq}
+                  description="Get all Walmart users in database."
+                  url="https://portfolio-backend-ahyh.onrender.com/users"
+                  reqType="GET"
+                  response={[
+                    {
+                      _id: 'string',
+                      name: 'string',
+                      username: 'string',
+                      customerId: 'string',
+                      roleId: 'string',
+                      _v: 0,
+                    },
+                  ]}
+                  req={async () => {
+                    setPendingReq(true);
+                    return await API.getAllUsers(token, 'walmart');
+                  }}
+                  className="req-container"
+                />
+              ) : activeRoute === 'get-an-amazon' ? (
+                <Route
+                  setPendingReq={setPendingReq}
+                  pendingReq={pendingReq}
+                  description="Get an Amazon user from the database."
+                  url="https://portfolio-backend-ahyh.onrender.com/users/:id"
+                  reqType="GET"
+                  response={{
+                    _id: 'string',
+                    name: 'string',
+                    username: 'string',
+                    customerId: 'string',
+                    roleId: 'string',
+                    _v: 0,
+                  }}
+                  req={async () => {
+                    setPendingReq(true);
+                    return await API.getUserById(token, 'amazon');
+                  }}
+                  className="req-container"
+                />
+              ) : activeRoute === 'get-a-walmart' ? (
+                <Route
+                  setPendingReq={setPendingReq}
+                  pendingReq={pendingReq}
+                  description="Get an Walmart user from the database."
+                  url="https://portfolio-backend-ahyh.onrender.com/users/:id"
+                  reqType="GET"
+                  response={{
+                    _id: 'string',
+                    name: 'string',
+                    username: 'string',
+                    customerId: 'string',
+                    roleId: 'string',
+                    _v: 0,
+                  }}
+                  req={async () => {
+                    setPendingReq(true);
+                    return await API.getUserById(token, 'walmart');
+                  }}
+                  className="req-container"
+                />
+              ) : null}
+            </>
+          ) : activeReq === 'post' ? (
+            <>
+              <div className="route-headers">
+                <h1
+                  className={
+                    activeRoute === 'create-an-amazon' ? 'active-route' : ''
+                  }
+                  onClick={() => setActiveRoute('create-an-amazon')}
+                >
+                  Create Amazon User
+                </h1>
+                <h1
+                  className={
+                    activeRoute === 'create-a-walmart' ? 'active-route' : ''
+                  }
+                  onClick={() => setActiveRoute('create-a-walmart')}
+                >
+                  Create Walmart User
+                </h1>
+              </div>
+              {activeRoute === 'create-an-amazon' ? (
+                <Route
+                  setPendingReq={setPendingReq}
+                  pendingReq={pendingReq}
+                  description="Create an amazon user."
+                  url="https://portfolio-backend-ahyh.onrender.com/users"
+                  reqType="POST"
+                  createBody={createUserBodyJSON}
+                  bodyPlaceHolder={{
+                    name: 'string',
+                    username: 'string',
+                    password: 'string',
+                  }}
+                  userRole={userRole}
+                  handleTextAreaChange={(e) => {
+                    setPostErrorMessage('');
+                    setCreateUserBodyJSON(e.target.value);
+                  }}
+                  response={{
+                    statusCode: 201,
+                    message: 'string',
+                    data: {
+                      _id: 'string',
+                      name: 'string',
+                      username: 'string',
+                      customerId: 'string',
+                      roleId: 'string',
+                      _v: 0,
+                    },
+                  }}
+                  req={async () => {
+                    const validObject = validUserObject();
+                    if (!validObject) return;
+                    setPendingReq(true);
+                    return await API.createUser(
+                      token,
+                      'amazon',
+                      userRole,
+                      createUserBody as Partial<CreateUserBodyDTO>,
+                    );
+                  }}
+                  className="req-container"
+                  onRadioBtnChange={(e) => {
+                    setPostErrorMessage('');
+                    setUserRole(
+                      !e.target.checked
+                        ? ''
+                        : e.target.name === 'superUser'
+                          ? Role.Super_User
+                          : e.target.name === 'admin'
+                            ? Role.Admin
+                            : Role.User,
+                    );
+                  }}
+                  handleResetJsonBtn={handleResetJsonBtn}
+                  errorMessage={postErrorMessage}
+                />
+              ) : activeRoute === 'create-a-walmart' ? (
+                <Route
+                  setPendingReq={setPendingReq}
+                  pendingReq={pendingReq}
+                  description="Create an walmart user."
+                  url="https://portfolio-backend-ahyh.onrender.com/users"
+                  reqType="POST"
+                  createBody={createUserBodyJSON}
+                  bodyPlaceHolder={{
+                    name: 'string',
+                    username: 'string',
+                    password: 'string',
+                  }}
+                  userRole={userRole}
+                  handleTextAreaChange={(e) => {
+                    setPostErrorMessage('');
+                    setCreateUserBodyJSON(e.target.value);
+                  }}
+                  response={{
+                    statusCode: 201,
+                    message: 'string',
+                    data: {
+                      _id: 'string',
+                      name: 'string',
+                      username: 'string',
+                      customerId: 'string',
+                      roleId: 'string',
+                      _v: 0,
+                    },
+                  }}
+                  req={async () => {
+                    const validObject = validUserObject();
+                    if (!validObject) return;
+                    setPendingReq(true);
+                    return await API.createUser(
+                      token,
+                      'walmart',
+                      userRole,
+                      createUserBody as Partial<CreateUserBodyDTO>,
+                    );
+                  }}
+                  className="req-container"
+                  onRadioBtnChange={(e) => {
+                    setPostErrorMessage('');
+                    setUserRole(
+                      !e.target.checked
+                        ? ''
+                        : e.target.name === 'superUser'
+                          ? Role.Super_User
+                          : e.target.name === 'admin'
+                            ? Role.Admin
+                            : Role.User,
+                    );
+                  }}
+                  handleResetJsonBtn={handleResetJsonBtn}
+                  errorMessage={postErrorMessage}
+                />
+              ) : null}
+            </>
+          ) : activeReq === 'patch' ? (
+            <>
+              <div className="route-headers">
+                <h1
+                  className={
+                    activeRoute === 'update-an-amazon' ? 'active-route' : ''
+                  }
+                  onClick={() => setActiveRoute('update-an-amazon')}
+                >
+                  Update Amazon User
+                </h1>
+                <h1
+                  className={
+                    activeRoute === 'update-a-walmart' ? 'active-route' : ''
+                  }
+                  onClick={() => setActiveRoute('update-a-walmart')}
+                >
+                  Update Walmart User
+                </h1>
+              </div>
+              {activeRoute === 'update-an-amazon' ? (
+                <Route
+                  setPendingReq={setPendingReq}
+                  pendingReq={pendingReq}
+                  description="Update an amazon user."
+                  url="https://portfolio-backend-ahyh.onrender.com/users"
+                  reqType="PATCH"
+                  updateBody={updateUserBodyJSON}
+                  bodyPlaceHolder={{
+                    name: 'string',
+                    username: 'string',
+                    password: 'string',
+                  }}
+                  userRole={userRole}
+                  handleTextAreaChange={(e) => {
+                    setPatchErrorMessage('');
+                    setUpdateUserBodyJSON(e.target.value);
+                  }}
+                  response={{
+                    statusCode: 200,
+                    message: 'string',
+                    data: {
+                      _id: 'string',
+                      name: 'string',
+                      username: 'string',
+                      customerId: 'string',
+                      roleId: 'string',
+                      _v: 0,
+                    },
+                  }}
+                  req={async () => {
+                    const validObject = validUserObject();
+                    if (!validObject) return;
+                    setPendingReq(true);
+                    return await API.updateUser(
+                      token,
+                      'amazon',
+                      userRole,
+                      updateUserBody as Partial<UpdateUserBodyDTO>,
+                    );
+                  }}
+                  className="req-container"
+                  onRadioBtnChange={(e) => {
+                    setPatchErrorMessage('');
+                    setUserRole(
+                      !e.target.checked
+                        ? ''
+                        : e.target.name === 'superUser'
+                          ? Role.Super_User
+                          : e.target.name === 'admin'
+                            ? Role.Admin
+                            : Role.User,
+                    );
+                  }}
+                  handleResetJsonBtn={handleResetJsonBtn}
+                  errorMessage={patchErrorMessage}
+                />
+              ) : activeRoute === 'update-a-walmart' ? (
+                <Route
+                  setPendingReq={setPendingReq}
+                  pendingReq={pendingReq}
+                  description="Update an walmart user."
+                  url="https://portfolio-backend-ahyh.onrender.com/users"
+                  reqType="PATCH"
+                  updateBody={updateUserBodyJSON}
+                  bodyPlaceHolder={{
+                    name: 'string',
+                    username: 'string',
+                    password: 'string',
+                  }}
+                  userRole={userRole}
+                  handleTextAreaChange={(e) => {
+                    setPatchErrorMessage('');
+                    setUpdateUserBodyJSON(e.target.value);
+                  }}
+                  response={{
+                    statusCode: 200,
+                    message: 'string',
+                    data: {
+                      _id: 'string',
+                      name: 'string',
+                      username: 'string',
+                      customerId: 'string',
+                      roleId: 'string',
+                      _v: 0,
+                    },
+                  }}
+                  req={async () => {
+                    const validObject = validUserObject();
+                    if (!validObject) return;
+                    setPendingReq(true);
+                    return await API.updateUser(
+                      token,
+                      'amazon',
+                      userRole,
+                      updateUserBody as Partial<UpdateUserBodyDTO>,
+                    );
+                  }}
+                  className="req-container"
+                  onRadioBtnChange={(e) => {
+                    setPatchErrorMessage('');
+                    setUserRole(
+                      !e.target.checked
+                        ? ''
+                        : e.target.name === 'superUser'
+                          ? Role.Super_User
+                          : e.target.name === 'admin'
+                            ? Role.Admin
+                            : Role.User,
+                    );
+                  }}
+                  handleResetJsonBtn={handleResetJsonBtn}
+                  errorMessage={patchErrorMessage}
+                />
+              ) : null}
+            </>
+          ) : activeReq === 'delete' ? (
+            <>
+              <div className="route-headers">
+                <h1
+                  className={
+                    activeRoute === 'delete-an-amazon' ? 'active-route' : ''
+                  }
+                  onClick={() => setActiveRoute('delete-an-amazon')}
+                >
+                  Delete Amazon User
+                </h1>
+                <h1
+                  className={
+                    activeRoute === 'delete-a-walmart' ? 'active-route' : ''
+                  }
+                  onClick={() => setActiveRoute('delete-a-walmart')}
+                >
+                  Delete Walmart User
+                </h1>
+              </div>
+              {activeRoute === 'delete-an-amazon' ? (
+                <Route
+                  setPendingReq={setPendingReq}
+                  pendingReq={pendingReq}
+                  route={activeRoute}
+                  description="Delete an amazon user."
+                  url="https://portfolio-backend-ahyh.onrender.com/users"
+                  reqType="DELETE"
+                  response={{
+                    statusCode: 200,
+                    message: 'string',
+                  }}
+                  req={async () => {
+                    setPendingReq(true);
+                    return await API.deleteUser(token, userId);
+                  }}
+                  className="req-container"
+                  userId={userId}
+                  onUserIdChange={(e) =>
+                    setUserId(
+                      !e.target.checked
+                        ? ''
+                        : e.target.name === 'amazonAdmin'
+                          ? UserId.Amazon_Admin
+                          : UserId.Amazon_User,
+                    )
+                  }
+                />
+              ) : activeRoute === 'delete-a-walmart' ? (
+                <Route
+                  setPendingReq={setPendingReq}
+                  pendingReq={pendingReq}
+                  route={activeRoute}
+                  description="Delete a walmart user."
+                  url="https://portfolio-backend-ahyh.onrender.com/users"
+                  reqType="DELETE"
+                  response={{
+                    statusCode: 200,
+                    message: 'string',
+                  }}
+                  req={async () => {
+                    setPendingReq(true);
+                    return await API.deleteUser(token, userId);
+                  }}
+                  className="req-container"
+                  userId={userId}
+                  onUserIdChange={(e) => {
+                    setUserId(
+                      !e.target.checked
+                        ? ''
+                        : e.target.name === 'walmartAdmin'
+                          ? UserId.Walmart_Admin
+                          : UserId.Walmart_User,
+                    );
+                  }}
+                />
+              ) : null}
+            </>
+          ) : null}
+        </>
+      </div>
+    </div>
+  );
+};
+
+export default ApiRoutes;

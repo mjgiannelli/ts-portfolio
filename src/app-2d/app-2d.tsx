@@ -6,6 +6,7 @@ import Nav from './components/nav/nav';
 import Footer from './components/footer/footer';
 import Resume from './views/resume/resume.view';
 import About from './views/about/about.view';
+import Backend from './views/backend/backend.view';
 
 interface App2DProps {
   colorTheme: string;
@@ -20,6 +21,9 @@ const App2D: React.FC<App2DProps> = ({ colorTheme }) => {
       name: 'Portfolio',
     },
     {
+      name: 'Backend Example',
+    },
+    {
       name: 'Contact',
     },
     {
@@ -27,7 +31,7 @@ const App2D: React.FC<App2DProps> = ({ colorTheme }) => {
     },
   ]);
 
-  const [selectedNavLink, setSelectedNavLink] = useState(navLinks[0].name);
+  const [selectedNavLink, setSelectedNavLink] = useState(navLinks[2].name);
   return (
     <div>
       <Nav
@@ -44,6 +48,10 @@ const App2D: React.FC<App2DProps> = ({ colorTheme }) => {
         ) : selectedNavLink === 'Portfolio' ? (
           <>
             <Portfolio />
+          </>
+        ) : selectedNavLink === 'Backend Example' ? (
+          <>
+            <Backend />
           </>
         ) : selectedNavLink === 'Contact' ? (
           <>

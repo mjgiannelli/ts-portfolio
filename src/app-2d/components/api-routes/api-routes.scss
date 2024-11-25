@@ -1,0 +1,111 @@
+@import '../../variables';
+// Small devices (landscape phones, 0 - 575px)
+@media (min-width: 0px) { 
+    .requests {
+        margin-top: 2rem;
+        width: 95%;
+        border: var(--border-primary);
+        border-radius: var(--border-radius);
+        box-shadow: var(--box-shadow-primary);
+        height: 60rem;
+        .tabs {
+            display: flex;
+            justify-content: space-around;
+            border-radius: var(--border-radius);
+            h1 {
+                font-size: 1.6rem;
+                width: 100%;
+                text-align: center;
+                padding: 0.5rem;
+                cursor: pointer;
+            }
+            .active-req {
+                background-color: var(--text-color);
+                color: var(--secondary-color);
+            }
+        }
+        .routes {
+            background-color: var(--text-color);
+            color: var(--primary-color);
+            border-bottom-left-radius: 2rem;
+            border-bottom-right-radius: 2rem;
+            height: 57rem;
+            .route-headers {
+                display: flex;
+                justify-content: space-around;
+                align-items: center;
+                background-color: var(--primary-color);
+                color: var(--text-color);
+                h1 {
+                    align-self: center;
+                    text-align: center;
+                    align-content: center;
+                    width: 100%;
+                    cursor: pointer;
+                    font-size: 1.2rem;
+                    height: 5.3rem;
+                    padding: 0.25rem;
+                }
+                .active-route {
+                    background-color: var(--text-color);
+                    color: var(--secondary-color);
+                }
+            }
+        }
+    }
+}
+
+// Small devices (landscape phones, 576 - 767px)
+@media (min-width: 576px) { 
+    .requests {
+        margin-top: 2rem;
+        width: 95%;
+        height: 60rem;
+        .tabs {
+            h1 {
+                font-size: 1.8rem;
+                width: 100%;
+                padding: 0.5rem;
+            }
+        }
+        .routes {
+            height: 56.65rem;
+            .route-headers {
+                h1 {
+                    font-size: 1.6rem;
+                    height: 6rem;
+                }
+            }
+        }
+    }
+}
+
+// Medium devices (tablets, 768px - 991px)
+@media (min-width: 768px) { 
+    .requests {
+        height: 63.3rem;
+        .routes {
+            height: 60rem;
+        }
+    }
+}
+
+// Large devices (desktops, 992px and below)
+@media (min-width: 992px) { 
+    
+}
+
+// Extra large devices (large desktops, 1200px and below)
+@media (min-width: 1200px) { 
+    .requests {
+        height: 65rem;
+        .routes {
+            height: 61.7rem;
+        }
+    }
+}
+
+// Extra large devices (large desktops, 1600px and below)
+@media (min-width: 1600px) { 
+
+}
