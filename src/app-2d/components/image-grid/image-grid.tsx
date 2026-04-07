@@ -17,6 +17,7 @@ interface BlockData {
 
 const ImageGrid: React.FC<ImageGridViewProps> = ({ imgContainerRef }) => {
   const hasMounted = useRef(false);
+  const animationComplete = useRef(false);
   const blockSize = 6;
   const imageWidth = 180;
   const imageHeight = 276;
@@ -25,6 +26,8 @@ const ImageGrid: React.FC<ImageGridViewProps> = ({ imgContainerRef }) => {
   const imageUrl = '/assets/images/card-2.png'; // Replace with your image path
 
   const [blocks, setBlocks] = useState<BlockData[]>([]);
+  const [animate, setAnimate] = useState(true);
+  const resizeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     const imgContainerElement = imgContainerRef.current;
@@ -54,12 +57,31 @@ const ImageGrid: React.FC<ImageGridViewProps> = ({ imgContainerRef }) => {
 
     setBlocks(initialBlocks);
     // Start the animation sequence
-    setTimeout(() => animateToCluster(width), 1000); // After 1 second
-    console.log('ran animation to cluster');
-    setTimeout(() => animateToMiddleLeft(width, height), 2000); // After 3 seconds
-    console.log('ran animation middle left');
-    setTimeout(() => animateToLowerMiddle(width, height), 3000); // After 5 seconds
-    console.log('ran animation to lower middle');
+    setTimeout(() => animateToCluster(width), 1000);
+    setTimeout(() => animateToMiddleLeft(width, height), 2000);
+    setTimeout(() => {
+      animateToLowerMiddle(width, height);
+      animationComplete.current = true;
+    }, 3000);
+  }, []);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (!animationComplete.current) return;
+      const imgContainerElement = imgContainerRef.current;
+      if (!imgContainerElement) return;
+      const { clientWidth: w, clientHeight: h } = imgContainerElement;
+      setAnimate(false);
+      animateToLowerMiddle(w, h);
+      if (resizeTimer.current) clearTimeout(resizeTimer.current);
+      resizeTimer.current = setTimeout(() => setAnimate(true), 150);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      if (resizeTimer.current) clearTimeout(resizeTimer.current);
+    };
   }, []);
 
   const animateToCluster = (w: number) => {
@@ -123,6 +145,7 @@ const ImageGrid: React.FC<ImageGridViewProps> = ({ imgContainerRef }) => {
             backgroundPositionX={block.backgroundPositionX}
             backgroundPositionY={block.backgroundPositionY}
             imageUrl={imageUrl}
+            animate={animate}
           />
         ))}
       </>
