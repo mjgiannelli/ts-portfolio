@@ -1,8 +1,14 @@
 import { useState } from 'react';
 import './project-list.scss';
 import { formatTitle } from '../../../utilties/utils';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faRocket,
+  faLightbulb,
+  faCode,
+  faCodeBranch,
+} from '@fortawesome/free-solid-svg-icons';
 
-// Define the type for each project object
 interface Project {
   name: string;
   deploy: string;
@@ -12,7 +18,10 @@ interface Project {
 }
 
 const ProjectList = (): JSX.Element => {
-  // Define the state with the array of projects typed as Project[]
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [activeQuadrant, setActiveQuadrant] = useState<
+    'problem' | 'stack' | null
+  >(null);
   const [projects] = useState<Project[]>([
     {
       name: 'board-reactions',
@@ -57,45 +66,88 @@ const ProjectList = (): JSX.Element => {
       {projects.map((project, index) => (
         <div className="project col-4" key={index}>
           <h2>{formatTitle(project.name)}</h2>
-          <div>
+          <div
+            className="project-image-wrapper"
+            onMouseEnter={() => setHoveredIndex(index)}
+            onMouseLeave={() => {
+              setHoveredIndex(null);
+              setActiveQuadrant(null);
+            }}
+          >
             <img
               className="project_img"
               src={`/assets/images/${project.name}.png`}
               alt={project.name}
             />
-            <div className="project_description border project-content">
-              <div className="row project_details">
-                <div className="col-10">
-                  <p className="project-name">{formatTitle(project.name)}</p>
+            <div
+              className={`project-orbit-overlay${hoveredIndex === index ? ' visible' : ''}`}
+            >
+              <div className="ring-container">
+                {/* ── Top-left: Problem Solved ── */}
+                <div
+                  className="arc-quadrant q-top-left"
+                  onMouseEnter={() => setActiveQuadrant('problem')}
+                >
+                  <div className="ring-arc" />
+                  <div className="arc-icon">
+                    <FontAwesomeIcon icon={faLightbulb} />
+                    <span>Problem</span>
+                  </div>
                 </div>
-                <div className="col-10">
-                  <p className="project-prob">{project.problem_solved}</p>
+
+                {/* ── Top-right: Deploy (link) ── */}
+                <a
+                  className="arc-quadrant q-top-right"
+                  href={project.deploy}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onMouseEnter={() => setActiveQuadrant(null)}
+                >
+                  <div className="ring-arc" />
+                  <div className="arc-icon">
+                    <FontAwesomeIcon icon={faRocket} />
+                    <span>Deploy</span>
+                  </div>
+                </a>
+
+                {/* ── Bottom-left: Technologies ── */}
+                <div
+                  className="arc-quadrant q-bottom-left"
+                  onMouseEnter={() => setActiveQuadrant('stack')}
+                >
+                  <div className="ring-arc" />
+                  <div className="arc-icon">
+                    <FontAwesomeIcon icon={faCode} />
+                    <span>Stack</span>
+                  </div>
                 </div>
-                <div className="col-10">
-                  <p className="project-tech">
-                    Tech Used: {project.technologies_used}
-                  </p>
-                </div>
-                <div className="col-10">
-                  <a
-                    className="project-links"
-                    href={project.deploy}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Deployed App Link
-                  </a>
-                </div>
-                <div className="col-10">
-                  <a
-                    className="project-links"
-                    href={project.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    GitHub Repo Link
-                  </a>
-                </div>
+
+                {/* ── Bottom-right: GitHub (link) ── */}
+                <a
+                  className="arc-quadrant q-bottom-right"
+                  href={project.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onMouseEnter={() => setActiveQuadrant(null)}
+                >
+                  <div className="ring-arc" />
+                  <div className="arc-icon">
+                    <FontAwesomeIcon icon={faCodeBranch} />
+                    <span>GitHub</span>
+                  </div>
+                </a>
+              </div>
+
+              {/* ── Info panels ── */}
+              <div
+                className={`arc-info-panel arc-info-problem${activeQuadrant === 'problem' ? ' arc-info-visible' : ''}`}
+              >
+                <p className="arc-info-body">{project.problem_solved}</p>
+              </div>
+              <div
+                className={`arc-info-panel arc-info-stack${activeQuadrant === 'stack' ? ' arc-info-visible' : ''}`}
+              >
+                <p className="arc-info-body">{project.technologies_used}</p>
               </div>
             </div>
           </div>

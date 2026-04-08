@@ -1,151 +1,241 @@
-@media (min-width: 0px) {
-
-    .project {
-        text-align: center;
-        position: relative;
-      }
-
-      .project-content {
-        background-color: var(--text-color);
-        justify-content: center;
-        text-align: center;
-        background-image: linear-gradient(#22c1c3,#fdbb2d);
-        display: flex;
-        align-items: center;
-      }
-      
-      .project-links {
-        text-decoration: none;
-        color: blue;
-      }
-      
-      .project_description {
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        background: white;
-        color: #fff;
-        visibility: hidden;
-        opacity: 0;
-        transition: opacity .5s, visibility .5s;
-        background-color: var(--text-color);
-        justify-content: center;
-        text-align: center;
-        background-image: linear-gradient(#22c1c3,#fdbb2d);
-        display: flex;
-      }
-      
-      .project:hover .project_description {
-        visibility: visible;
-        opacity: 1;
-      }
-      
-      .project-name {
-        font-size: 3rem;
-      }
-      
+/* ── Project grid ─────────────────────────────────────────────────────────── */
+.project {
+  text-align: center;
+  position: relative;
 }
 
-@media (min-width: 576px) {
-
-    .project-title {
-        font-size: 2.5rem;
-      }
-    
-      .project-links {
-        font-size: 2rem;
-      }
-
-      .project-prob {
-        font-size: 2rem;
-      }
-
-      .project-tech {
-        font-size: 2rem;
-      }
-     
-      .project-name {
-        font-size: 4rem;
-      }
-
+/* ── Image wrapper ────────────────────────────────────────────────────────── */
+.project-image-wrapper {
+  position: relative;
+  display: block;
+  width: 100%;
 }
 
-@media (min-width: 768px) {
-
-    .project-title {
-        font-size: 3rem;
-      }
-      
-      .project-links {
-        font-size: 2.5rem;
-      }
-      
-      .project-prob {
-        font-size: 2.5rem;
-      }
-
-      .project-tech {
-        font-size: 2.5rem;
-      }
-
-      .project-name {
-        font-size: 5rem;
-      }
-
+.project_img {
+  display: block;
+  width: 100%;
+  height: auto;
 }
 
+/* ── Orbit overlay — hidden until .visible class is added via React state ─── */
+.project-orbit-overlay {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: rgba(6, 8, 18, 0.9);
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.35s ease, visibility 0.35s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
+.project-orbit-overlay.visible {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* ── Ring container — 2×2 grid, each cell is one arc quadrant ─────────────── */
+.ring-container {
+  /*
+   * Keep the circle square and fully inside the overlay regardless of the
+   * image's aspect ratio. In a flex container, aspect-ratio: 1 respects
+   * both width and max-height — the smaller dimension wins, giving ~10%
+   * padding on all four sides.
+   */
+  width: 50%;
+  max-height: 90%;
+  aspect-ratio: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 5px;
+}
+
+/* ── Each quadrant clips its oversized ring-arc to one quarter ────────────── */
+.arc-quadrant {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+/*
+ * ring-arc is 200% × 200% of the quadrant.
+ * Its center (= circle center) is pinned to the quadrant's INNER corner
+ * via absolute positioning, so overflow:hidden reveals only the 90° slice.
+ *
+ * Border-width controls arc thickness — ~38% of outer radius.
+ * border-width can't be %, so we use vw with a sensible clamp.
+ */
+.ring-arc {
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  border-radius: 50%;
+  border: clamp(22px, 4vw, 60px) solid rgba(34, 193, 195, 0.9);
+  box-sizing: border-box;
+  background: transparent;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  box-shadow: 0 0 16px rgba(34, 193, 195, 0.35);
+}
+
+/* Pin each ring-arc's center to its quadrant's inner corner */
+.q-top-left    .ring-arc { top: 0;    left: 0; }
+.q-top-right   .ring-arc { top: 0;    right: 0; }
+.q-bottom-left .ring-arc { bottom: 0; left: 0; }
+.q-bottom-right .ring-arc { bottom: 0; right: 0; }
+
+/* Hover: arc lights up gold */
+.arc-quadrant:hover .ring-arc {
+  border-color: #fdbb2d;
+  box-shadow: 0 0 26px rgba(253, 187, 45, 0.65);
+}
+
+/* ── Icon positioned at the visual midpoint of each arc (45° from inner corner) ── */
+.arc-icon {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  color: #fff;
+  font-size: clamp(0.55rem, 1vw, 0.8rem);
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.9);
+  transition: color 0.25s ease;
+}
+
+/*
+ * Arc midpoint at 45° is ~57% of quadrant size from the inner corner.
+ * Translating to top/left (quadrant top-left = 0,0):
+ *   inner corner for q-top-left    = bottom-right  → icon at left:43%, top:43%
+ *   inner corner for q-top-right   = bottom-left   → icon at left:57%, top:43%
+ *   inner corner for q-bottom-left = top-right     → icon at left:43%, top:57%
+ *   inner corner for q-bottom-right= top-left      → icon at left:57%, top:57%
+ */
+.q-top-left    .arc-icon { left: 43%; top: 43%; }
+.q-top-right   .arc-icon { left: 57%; top: 43%; }
+.q-bottom-left .arc-icon { left: 43%; top: 57%; }
+.q-bottom-right .arc-icon { left: 57%; top: 57%; }
+
+.arc-quadrant:hover .arc-icon {
+  color: #fdbb2d;
+}
+
+.arc-icon svg {
+  font-size: 1.6em;
+  filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.85));
+}
+
+.arc-icon span {
+  font-size: 0.9em;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* ── Arc info panels ─────────────────────────────────────────────────────── */
+/*
+ * Panels are anchored to the left edge of the overlay and fan out along
+ * the 45° midline of their quadrant (top-left → bottom-left diagonal).
+ * They scale in from the arc's inner corner using transform-origin.
+ */
+.arc-info-panel {
+  position: absolute;
+  left: 0;
+  width: clamp(120px, 38%, 220px);
+  padding: clamp(6px, 1.2vw, 14px) clamp(8px, 1.5vw, 18px);
+  background: rgba(6, 8, 18, 0.92);
+  border: 1px solid rgba(34, 193, 195, 0.55);
+  border-left: 3px solid rgba(34, 193, 195, 0.9);
+  box-shadow:
+    0 0 18px rgba(34, 193, 195, 0.2),
+    inset 0 0 10px rgba(34, 193, 195, 0.05);
+  clip-path: polygon(0 0, 100% 0, 92% 100%, 0 100%);
+  pointer-events: none;
+  opacity: 0;
+  transform: scaleX(0);
+  transition:
+    opacity 0.28s ease,
+    transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+  z-index: 10;
+}
+
+/* Top-left quadrant — panel slides out from left, vertically centred in top half */
+.arc-info-problem {
+  top: 12%;
+  transform-origin: left center;
+}
+
+/* Bottom-left quadrant — panel slides out from left, vertically centred in bottom half */
+.arc-info-stack {
+  bottom: 12%;
+  transform-origin: left center;
+}
+
+.arc-info-panel.arc-info-visible {
+  opacity: 1;
+  transform: scaleX(1);
+}
+
+.arc-info-body {
+  margin: 0;
+  font-size: clamp(0.75rem, 1.4vw, 1rem);
+  line-height: 1.5;
+  color: rgba(220, 235, 255, 0.88);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+/* ── Responsive ───────────────────────────────────────────────────────────── */
 @media (min-width: 992px) {
-
-    #projects {
-        justify-content: space-between;
-      }
-    
-      .project-title {
-        font-size: 2rem;
-      }
-      
-      .project-links {
-        font-size: 1.5rem;
-    }
-
-    .project-prob {
-      font-size: 1.5rem;
-    }
-
-    .project-tech {
-      font-size: 1.5rem;
-    }
-      
-      .project-name {
-        font-size: 3rem;
-      }
-
+  #projects {
+    justify-content: space-between;
+  }
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 768px) and (max-width: 991px) {
+  .ring-arc {
+    border-width: clamp(36px, 7vw, 52px);
+  }
+}
 
-    .project-title {
-        font-size: 2.25rem;
-      }
-      
-      .project-links {
-        font-size: 2rem;
-      }
+/* Small screens — thicker arcs */
+@media (max-width: 767px) {
+  .ring-arc {
+    border-width: clamp(28px, 7vw, 42px);
+  }
+}
 
-      .project-prob {
-        font-size: 2rem;
-      }
+@media (max-width: 480px) {
+  .ring-arc {
+    border-width: clamp(32px, 9vw, 48px);
+  }
+}
 
-      .project-tech {
-        font-size: 2rem;
-      }
-      
-      .project-name {
-        font-size: 4rem;
-      }
-        
+/* Small screens — wider panel, tighter text */
+@media (max-width: 767px) {
+  .arc-info-panel {
+    width: clamp(100px, 48%, 180px);
+    padding: 5px 8px;
+  }
 
-}    
+  .arc-info-body {
+    font-size: 0.7rem;
+    line-height: 1.4;
+  }
+}
+
+/* Very small / portrait mobile */
+@media (max-width: 480px) {
+  .arc-info-panel {
+    width: 52%;
+  }
+
+  .arc-info-body {
+    font-size: 0.65rem;
+  }
+}

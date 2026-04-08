@@ -9,6 +9,7 @@ interface BlockProps {
   backgroundPositionX: number;
   backgroundPositionY: number;
   imageUrl: string;
+  animate?: boolean;
 }
 
 const Block: React.FC<BlockProps> = ({
@@ -18,6 +19,7 @@ const Block: React.FC<BlockProps> = ({
   backgroundPositionX,
   backgroundPositionY,
   imageUrl,
+  animate = true,
 }) => {
   return (
     <div
@@ -29,7 +31,7 @@ const Block: React.FC<BlockProps> = ({
         backgroundImage: `url(${imageUrl})`,
         backgroundPosition: `-${backgroundPositionX}px -${backgroundPositionY}px`,
         backgroundSize: '180px 276px',
-        transition: 'transform 1s ease-in-out',
+        transition: animate ? 'transform 1s ease-in-out' : 'none',
       }}
     />
   );
